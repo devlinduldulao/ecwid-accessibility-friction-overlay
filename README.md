@@ -83,7 +83,7 @@ Replace `STORE_ID` in the storefront test page with your real Ecwid store ID.
 ## Deployment Flow
 
 1. Host this repo on any static HTTPS platform such as GitHub Pages, Netlify, Cloudflare Pages, or Vercel static hosting.
-2. Open `public/index.html` from that host.
+2. Open the hosted root page from that host.
 3. Set the static asset base URL.
 4. Copy the generated loader snippet.
 5. Paste it into Ecwid Control Panel → Design → Custom JavaScript.
@@ -112,6 +112,7 @@ The publishing pages and submission template are generated from `config/publishi
 
 The build output preserves the current static layout:
 
+- `dist/index.html`
 - `dist/public/index.html`
 - `dist/public/storefront-test.html`
 - `dist/public/privacy.html`

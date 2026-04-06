@@ -17,7 +17,7 @@ async function main() {
   await copyFileIfPresent('README.md');
   await copyFileIfPresent('LICENSE');
   await writeBuildInfo();
-  await writeRootRedirect();
+  await writeRootIndex();
 
   process.stdout.write(`Built static package at ${distDir}\n`);
 }
@@ -43,20 +43,15 @@ async function copyFileIfPresent(relativePath) {
   }
 }
 
-async function writeRootRedirect() {
-  const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=public/index.html">
-  <title>Accessibility Friction Overlay for Ecwid</title>
-</head>
-<body>
-  <a href="public/index.html">Open app</a>
-</body>
-</html>
-`;
-  await writeFile(path.join(distDir, 'index.html'), html, 'utf8');
+async function writeRootIndex() {
+  const sourcePath = path.join(rootDir, 'public', 'index.html');
+  const targetPath = path.join(distDir, 'index.html');
+  const sourceHtml = await readFile(sourcePath, 'utf8');
+  const rootHtml = sourceHtml
+    .replaceAll('../assets/', 'assets/')
+    .replaceAll('../src/', 'src/');
+
+  await writeFile(targetPath, rootHtml, 'utf8');
 }
 
 async function writeBuildInfo() {
@@ -64,7 +59,7 @@ async function writeBuildInfo() {
     builtAt: new Date().toISOString(),
     layout: {
       appIcon: 'assets/marketplace/app-icon.svg',
-      admin: 'public/index.html',
+      admin: 'index.html',
       idleScreenshot: 'assets/marketplace/control-room-idle.png',
       listingBanner: 'assets/marketplace/listing-banner.svg',
       privacy: 'public/privacy.html',

@@ -27,7 +27,7 @@ Any static HTTPS host works, including:
 ## Static Deployment Steps
 
 1. Deploy this repo as static files.
-2. Open your hosted `public/index.html` page.
+2. Open your hosted root page.
 3. Enter the base URL where the repo is hosted.
 4. Copy the generated snippet.
 5. Paste the snippet into Ecwid Control Panel → Design → Custom JavaScript.
@@ -44,7 +44,7 @@ The snippet loads three assets from your static host:
 
 If you want the admin-style control room available in Ecwid admin, point your Ecwid iframe page to:
 
-`https://your-static-host/.../public/index.html`
+`https://your-static-host/.../`
 
 This page is static. It does not need a backend API. It is the primary experience a business owner uses to configure and preview the module.
 
@@ -77,7 +77,7 @@ Published multi-store apps can still use a static hosting model for the merchant
 ## Static Hosting Checklist
 
 - [ ] Your host serves over HTTPS
-- [ ] `public/index.html` is reachable publicly
+- [ ] The root `index.html` page is reachable publicly
 - [ ] `src/shared/core.js` is reachable publicly
 - [ ] `src/storefront/custom-storefront.js` is reachable publicly
 - [ ] `src/storefront/custom-storefront.css` is reachable publicly
