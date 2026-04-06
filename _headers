@@ -1,3 +1,7 @@
+# NOTE: This file is for Netlify / Cloudflare Pages only.
+# GitHub Pages ignores _headers entirely.
+# For GitHub Pages, CSP and referrer policies are set via <meta> tags in each HTML file.
+# If you migrate to Netlify or Cloudflare Pages, this file will apply automatically.
 /*
   Content-Security-Policy: default-src 'self'; script-src 'self' https://djqizrxa6f10j.cloudfront.net; style-src 'self' 'unsafe-inline' https://djqizrxa6f10j.cloudfront.net; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self' https://*.ecwid.com https://my.ecwid.com
   Referrer-Policy: no-referrer
