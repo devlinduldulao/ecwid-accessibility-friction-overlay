@@ -17,6 +17,7 @@ async function main() {
   await copyFileIfPresent('README.md');
   await copyFileIfPresent('LICENSE');
   await writeBuildInfo();
+  await writeRootRedirect();
 
   process.stdout.write(`Built static package at ${distDir}\n`);
 }
@@ -40,6 +41,22 @@ async function copyFileIfPresent(relativePath) {
 
     throw error;
   }
+}
+
+async function writeRootRedirect() {
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=public/index.html">
+  <title>Accessibility Friction Overlay for Ecwid</title>
+</head>
+<body>
+  <a href="public/index.html">Open app</a>
+</body>
+</html>
+`;
+  await writeFile(path.join(distDir, 'index.html'), html, 'utf8');
 }
 
 async function writeBuildInfo() {
