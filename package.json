@@ -1,0 +1,32 @@
+{
+  "name": "accessibility-friction-overlay-ecwid",
+  "version": "1.0.0",
+  "description": "Static Ecwid deployment for Accessibility Friction Overlay with no backend, database, or Redis dependency.",
+  "scripts": {
+    "build": "node scripts/render-publishing-pages.mjs && node scripts/build.mjs",
+    "capture:screenshots": "node scripts/capture-marketplace-screenshots.mjs",
+    "preview": "node scripts/preview.mjs .",
+    "preview:dist": "node scripts/preview.mjs dist",
+    "test": "node --test tests/**/*.test.js",
+    "lint": "eslint src/ tests/"
+  },
+  "keywords": [
+    "ecwid",
+    "lightspeed",
+    "ecommerce",
+    "plugin",
+    "accessibility",
+    "static"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^10.0.3",
+    "jsdom": "^26.1.0",
+    "playwright": "^1.53.1",
+    "serve": "^14.2.4"
+  }
+}

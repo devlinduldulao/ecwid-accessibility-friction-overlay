@@ -1,0 +1,33 @@
+{
+  "appName": "Accessibility Friction Overlay for Ecwid",
+  "tagline": "Merchant-facing accessibility QA control room for Ecwid storefronts.",
+  "shortDescription": "Preview fake accessibility incidents, generate Ecwid storefront snippets, and review friction hotspots without a production database or long-running backend.",
+  "category": "Store design / accessibility / merchant tools",
+  "supportUrl": "/public/support.html",
+  "privacyPolicyUrl": "/public/privacy.html",
+  "termsOfServiceUrl": "/public/terms.html",
+  "demoUrl": "/public/index.html",
+  "assets": {
+    "iconSource": "assets/marketplace/app-icon.svg",
+    "iconPng": "assets/marketplace/app-icon.png",
+    "listingBannerSource": "assets/marketplace/listing-banner.svg",
+    "listingBannerPng": "assets/marketplace/listing-banner.png",
+    "screenshots": [
+      "assets/marketplace/control-room-idle.png",
+      "assets/marketplace/control-room-preview.png"
+    ]
+  },
+  "technicalNotes": {
+    "hosting": "Static HTTPS hosting",
+    "backendRequired": false,
+    "databaseRequired": false,
+    "redisRequired": false,
+    "primarySurface": "Merchant dashboard",
+    "storefrontBehavior": "Merchant QA collector with customer-facing overlay disabled by default"
+  },
+  "submissionChecklist": [
+    "Confirm support, privacy, terms, and demo URLs match the final production host if absolute URLs are required",
+    "Review the business name, support contact, and legal copy in config/publishing-profile.json",
+    "Export any additional marketplace-specific PNG sizes if required"
+  ]
+}

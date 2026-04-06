@@ -1,0 +1,174 @@
+/**
+ * Storefront presentation for the static Accessibility Friction Overlay.
+ * Aligned with Lightspeed Design System (Charcoal, Fire Red, pure White).
+ */
+
+.ecwid-productBrowser .grid-product__title-inner,
+.ecwid-productBrowser .product-details__product-title {
+  text-wrap: balance;
+}
+
+.ecwid-productBrowser :focus-visible {
+  outline: 3px solid #E81C24; /* Lightspeed Fire Red */
+  outline-offset: 3px;
+}
+
+.afo-ecwid-overlay {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2147483646;
+  width: min(360px, calc(100vw - 24px));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  color: #1D1D1D; /* Lightspeed Charcoal Gray */
+}
+
+.afo-ecwid-overlay__toggle {
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  background: #1D1D1D; /* Lightspeed Charcoal Gray */
+  color: #FFFFFF;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 12px rgba(29, 29, 29, 0.15);
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.afo-ecwid-overlay__toggle:hover {
+  background: #333333;
+}
+
+.afo-ecwid-overlay__panel {
+  margin-top: 10px;
+  padding: 1.25rem;
+  border-radius: 12px;
+  background: #FFFFFF;
+  border: 1px solid rgba(29, 29, 29, 0.1);
+  box-shadow: 0 12px 36px rgba(29, 29, 29, 0.15);
+}
+
+.afo-ecwid-overlay__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
+
+.afo-ecwid-overlay__eyebrow,
+.afo-ecwid-overlay__hint {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #666666;
+}
+
+.afo-ecwid-overlay__header h2 {
+  margin: 0.35rem 0 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1D1D1D;
+}
+
+.afo-ecwid-overlay__clear {
+  border: 1px solid rgba(29, 29, 29, 0.2);
+  border-radius: 4px;
+  background: transparent;
+  color: #1D1D1D;
+  font: inherit;
+  padding: 0.42rem 0.8rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.afo-ecwid-overlay__clear:hover {
+  background: rgba(29, 29, 29, 0.05);
+}
+
+.afo-ecwid-overlay__metrics,
+.afo-ecwid-overlay__recommendations,
+.afo-ecwid-overlay__feed {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.95rem;
+}
+
+.afo-ecwid-overlay__metrics {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.afo-ecwid-overlay__metric,
+.afo-ecwid-overlay__recommendation,
+.afo-ecwid-overlay__event {
+  border-radius: 8px;
+  padding: 0.8rem 0.85rem;
+  background: #F9F9F9;
+  border: 1px solid rgba(29, 29, 29, 0.08);
+}
+
+.afo-ecwid-overlay__metric span,
+.afo-ecwid-overlay__event p,
+.afo-ecwid-overlay__recommendation p,
+.afo-ecwid-overlay__empty {
+  color: #666666;
+  font-size: 0.9rem;
+}
+
+.afo-ecwid-overlay__metric strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 1.45rem;
+  color: #E81C24; /* Lightspeed Fire Red */
+}
+
+.afo-ecwid-overlay__event span,
+.afo-ecwid-overlay__recommendation__tone {
+  display: inline-flex;
+  margin-top: 0.45rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(232, 28, 36, 0.1);
+  color: #E81C24;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.afo-ecwid-overlay__event b,
+.afo-ecwid-overlay__recommendation strong {
+  font-weight: 600;
+  color: #1D1D1D;
+}
+
+.afo-ecwid-overlay__event header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  font-size: 0.84rem;
+}
+
+.afo-ecwid-overlay__event p,
+.afo-ecwid-overlay__recommendation p,
+.afo-ecwid-overlay__empty {
+  margin: 0.45rem 0 0;
+  line-height: 1.5;
+}
+
+.afo-ecwid-overlay__hint {
+  margin-top: 0.95rem;
+}
+
+@media (max-width: 640px) {
+  .afo-ecwid-overlay {
+    right: 12px;
+    bottom: 12px;
+    width: calc(100vw - 24px);
+  }
+}

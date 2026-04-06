@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Accessibility Friction Overlay Listing Banner</title>
+  <desc id="desc">Banner artwork for the Ecwid merchant-facing accessibility control room.</desc>
+  <defs>
+    <linearGradient id="backdrop" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fcf7ec"/>
+      <stop offset="100%" stop-color="#ead7b3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#backdrop)"/>
+  <circle cx="1290" cy="120" r="210" fill="#0f766e" opacity="0.12"/>
+  <circle cx="290" cy="780" r="240" fill="#b46f36" opacity="0.12"/>
+  <rect x="92" y="96" width="1416" height="708" rx="44" fill="#fffaf2" stroke="#1d2421" stroke-opacity="0.08"/>
+  <text x="162" y="208" font-family="Iowan Old Style, Palatino Linotype, serif" font-size="72" font-weight="700" fill="#1d2421">Accessibility Friction Overlay</text>
+  <text x="162" y="272" font-family="American Typewriter, Courier New, monospace" font-size="28" font-weight="700" letter-spacing="4" fill="#6b4e2f">MERCHANT CONTROL ROOM FOR ECWID</text>
+  <text x="162" y="352" font-family="Avenir Next, Segoe UI, sans-serif" font-size="34" fill="#44514c">Preview fake accessibility incidents, generate storefront snippets, and review friction hotspots</text>
+  <text x="162" y="396" font-family="Avenir Next, Segoe UI, sans-serif" font-size="34" fill="#44514c">without adding a production database, Redis, or long-running Node server.</text>
+  <rect x="162" y="476" width="478" height="222" rx="28" fill="#f6f1e5" stroke="#1d2421" stroke-opacity="0.1"/>
+  <text x="202" y="534" font-family="American Typewriter, Courier New, monospace" font-size="22" font-weight="700" fill="#6b4e2f">PREVIEW MODE</text>
+  <text x="202" y="592" font-family="Avenir Next, Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#0f766e">6 warnings</text>
+  <text x="202" y="640" font-family="Avenir Next, Segoe UI, sans-serif" font-size="28" fill="#44514c">Synthetic checkout scenario running</text>
+  <rect x="704" y="220" width="642" height="432" rx="30" fill="#fbf7ef" stroke="#1d2421" stroke-opacity="0.12"/>
+  <rect x="750" y="282" width="220" height="120" rx="22" fill="#fff"/>
+  <rect x="992" y="282" width="300" height="120" rx="22" fill="#fff"/>
+  <rect x="750" y="426" width="542" height="44" rx="16" fill="#fff"/>
+  <rect x="750" y="488" width="542" height="44" rx="16" fill="#fff"/>
+  <rect x="750" y="550" width="542" height="44" rx="16" fill="#fff"/>
+  <text x="778" y="336" font-family="Avenir Next, Segoe UI, sans-serif" font-size="28" font-weight="700" fill="#1d2421">Keyboard trap risk</text>
+  <text x="778" y="374" font-family="Avenir Next, Segoe UI, sans-serif" font-size="50" font-weight="700" fill="#b46f36">1</text>
+  <text x="1020" y="336" font-family="Avenir Next, Segoe UI, sans-serif" font-size="28" font-weight="700" fill="#1d2421">Focus visibility</text>
+  <text x="1020" y="374" font-family="Avenir Next, Segoe UI, sans-serif" font-size="50" font-weight="700" fill="#0f766e">1</text>
+  <text x="778" y="456" font-family="Avenir Next, Segoe UI, sans-serif" font-size="24" fill="#1d2421">Dead Click · Checkout / Button / CTA Not Responding</text>
+  <text x="778" y="518" font-family="Avenir Next, Segoe UI, sans-serif" font-size="24" fill="#1d2421">Focus Visibility Issue · Checkout / Input / Missing Focus Indicator</text>
+  <text x="778" y="580" font-family="Avenir Next, Segoe UI, sans-serif" font-size="24" fill="#1d2421">Recovery · Checkout / Modal / Escape Released</text>
+  <rect x="162" y="740" width="258" height="64" rx="32" fill="#0f766e"/>
+  <text x="291" y="783" text-anchor="middle" font-family="Avenir Next, Segoe UI, sans-serif" font-size="28" font-weight="700" fill="#fffaf2">Merchant QA First</text>
+</svg>

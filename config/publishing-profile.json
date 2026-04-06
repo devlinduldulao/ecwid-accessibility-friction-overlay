@@ -1,0 +1,36 @@
+{
+  "appName": "Accessibility Friction Overlay for Ecwid",
+  "tagline": "Merchant-facing accessibility QA control room for Ecwid storefronts.",
+  "shortDescription": "Preview fake accessibility incidents, generate Ecwid storefront snippets, and review friction hotspots without a production database or long-running backend.",
+  "category": "Store design / accessibility / merchant tools",
+  "hostBaseUrl": "https://devlinduldulao.github.io/ecwid-accessibility-friction-overlay",
+  "businessName": "Configured marketplace publisher",
+  "supportEmail": "",
+  "supportResponseWindow": "Reply within 2 business days",
+  "supportTimezone": "UTC",
+  "supportUrl": "/public/support.html",
+  "privacyPolicyUrl": "/public/privacy.html",
+  "termsOfServiceUrl": "/public/terms.html",
+  "demoUrl": "/public/index.html",
+  "legalEffectiveDate": "2026-03-19",
+  "privacyContactBlurb": "Contact the support channel listed in the live marketplace listing for privacy requests.",
+  "termsWarrantyBlurb": "This app is provided as described in the active marketplace listing and any separate merchant agreement published with the app.",
+  "screenshots": [
+    "assets/marketplace/control-room-idle.png",
+    "assets/marketplace/control-room-preview.png"
+  ],
+  "assets": {
+    "iconSource": "assets/marketplace/app-icon.svg",
+    "iconPng": "assets/marketplace/app-icon.png",
+    "listingBannerSource": "assets/marketplace/listing-banner.svg",
+    "listingBannerPng": "assets/marketplace/listing-banner.png"
+  },
+  "technicalNotes": {
+    "hosting": "Static HTTPS hosting",
+    "backendRequired": false,
+    "databaseRequired": false,
+    "redisRequired": false,
+    "primarySurface": "Merchant dashboard",
+    "storefrontBehavior": "Merchant QA collector with customer-facing overlay disabled by default"
+  }
+}
