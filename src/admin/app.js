@@ -68,6 +68,9 @@
 
     if (window.EcwidApp && typeof window.EcwidApp.init === 'function') {
       var app = window.EcwidApp.init({ appId: appConfig.appId || 'accessibility-friction-overlay' });
+
+      listenForUninstall();
+
       if (app && typeof app.getPayload === 'function') {
         app.getPayload(function (payload) {
           storeId = String(payload && payload.store_id || 'demo-store');
@@ -356,6 +359,37 @@
   function getSuggestedBaseUrl() {
     var href = String(window.location.href);
     return href.slice(0, href.indexOf('/public/') > -1 ? href.indexOf('/public/') : href.lastIndexOf('/'));
+  }
+
+  function listenForUninstall() {
+    if (window.EcwidApp && typeof window.EcwidApp.destroy === 'function') {
+      window.EcwidApp.destroy = (function (originalDestroy) {
+        return function () {
+          cleanupLocalStorage();
+          if (typeof originalDestroy === 'function') {
+            originalDestroy.apply(this, arguments);
+          }
+        };
+      })(window.EcwidApp.destroy);
+    }
+
+    window.addEventListener('message', function (event) {
+      var data;
+      try { data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data; } catch { return; }
+      if (data && (data.method === 'destroyApp' || data.type === 'AppDestroyed')) {
+        cleanupLocalStorage();
+      }
+    });
+  }
+
+  function cleanupLocalStorage() {
+    try {
+      var keys = core.buildStorageKeys(storeId);
+      window.localStorage.removeItem(keys.settings);
+      window.localStorage.removeItem(keys.events);
+    } catch {
+      // Ignore errors during cleanup
+    }
   }
 
   function resizeIframe() {
