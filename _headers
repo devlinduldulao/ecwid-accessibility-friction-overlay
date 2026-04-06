@@ -1,4 +1,5 @@
 /*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://djqizrxa6f10j.cloudfront.net; style-src 'self' 'unsafe-inline' https://djqizrxa6f10j.cloudfront.net; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self' https://*.ecwid.com https://my.ecwid.com
   Referrer-Policy: no-referrer
   X-Content-Type-Options: nosniff
   Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()

@@ -17,6 +17,8 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
+  var _destroy = null;
+
   function init(windowObject) {
     var window = windowObject;
     var document = window && window.document;
@@ -715,10 +717,42 @@
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
   }
+    _destroy = function () {
+      document.removeEventListener('keydown', handleKeydown, true);
+      document.removeEventListener('focusin', handleFocusIn, true);
+      document.removeEventListener('click', handleClick, true);
+      document.removeEventListener('invalid', handleInvalid, true);
+      document.removeEventListener('input', handleFieldRecovery, true);
+      document.removeEventListener('change', handleFieldRecovery, true);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('pagehide', flushQueue, { capture: true });
+
+      flushQueue();
+
+      if (state.overlayRoot && state.overlayRoot.parentNode) {
+        state.overlayRoot.parentNode.removeChild(state.overlayRoot);
+        state.overlayRoot = null;
+      }
+
+      state.queue = [];
+      state.issueCooldowns.clear();
+      state.deadClickMap.clear();
+      state.invalidFieldMap.clear();
+      state.overlayCycles.clear();
+      _destroy = null;
+    };
+
     return true;
+  }
+
+  function destroy() {
+    if (typeof _destroy === 'function') {
+      _destroy();
+    }
   }
 
   return {
     init: init,
+    destroy: destroy,
   };
 });

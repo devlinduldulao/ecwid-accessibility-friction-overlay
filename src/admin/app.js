@@ -151,10 +151,16 @@
 
   function saveSettings() {
     settings = readForm();
+
+    if (settings.snippetBaseUrl && settings.snippetBaseUrl.indexOf('http://') === 0) {
+      showStatus('Warning: The base URL uses HTTP. Production deployments must use HTTPS.', 'error');
+      return;
+    }
+
     persistSettings();
     updateSnippet();
     updatePreview();
-    showStatus('Saved locally in this browser. The storefront uses the generated Ecwid snippet, not a backend.', 'success');
+    showStatus('Saved locally in this browser. The storefront uses the generated snippet, not a backend.', 'success');
   }
 
   function persistSettings() {
@@ -215,7 +221,7 @@
 
     navigator.clipboard.writeText(value)
       .then(function () {
-        showStatus('Snippet copied. Paste it into Ecwid Design > Custom JavaScript.', 'success');
+        showStatus('Snippet copied. Paste it into Design > Custom JavaScript.', 'success');
       })
       .catch(function () {
         showStatus('Copy failed. Select the snippet manually.', 'error');
