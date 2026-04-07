@@ -226,6 +226,7 @@
 
   function buildLoaderSnippet(snapshot) {
     var baseUrl = snapshot.snippetBaseUrl.replace(/\/$/, '');
+    var assetSuffix = getAssetQuerySuffix();
     var payload = {
       enabled: snapshot.enabled,
       trackCatalog: snapshot.trackCatalog,
@@ -241,9 +242,9 @@
       'window.AccessibilityFrictionOverlayEcwidConfig = ' + JSON.stringify(payload, null, 2) + ';',
       '(function () {',
       '  var assets = [',
-      "    { tag: 'link', rel: 'stylesheet', href: '" + baseUrl + "/src/storefront/custom-storefront.css' },",
-      "    { tag: 'script', src: '" + baseUrl + "/src/shared/core.js' },",
-      "    { tag: 'script', src: '" + baseUrl + "/src/storefront/custom-storefront.js' }",
+      "    { tag: 'link', rel: 'stylesheet', href: '" + baseUrl + "/src/storefront/custom-storefront.css" + assetSuffix + "' },",
+      "    { tag: 'script', src: '" + baseUrl + "/src/shared/core.js" + assetSuffix + "' },",
+      "    { tag: 'script', src: '" + baseUrl + "/src/storefront/custom-storefront.js" + assetSuffix + "' }",
       '  ];',
       '  assets.forEach(function (asset) {',
       '    var element = document.createElement(asset.tag);',
@@ -479,6 +480,14 @@
 
     var href = String(window.location.href).split('?')[0].split('#')[0];
     return href.slice(0, href.indexOf('/public/') > -1 ? href.indexOf('/public/') : href.lastIndexOf('/'));
+  }
+
+  function getAssetQuerySuffix() {
+    if (!appConfig.assetVersion) {
+      return '';
+    }
+
+    return '?v=' + encodeURIComponent(String(appConfig.assetVersion));
   }
 
   function listenForUninstall() {

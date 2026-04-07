@@ -34,6 +34,7 @@ test('build script creates the expected static package layout', () => {
   assert.match(rootIndex, /id="deployment-snippet-preview"/);
   assert.match(rootIndex, /id="preview-scenario-toggle"/);
   assert.match(rootIndex, /id="preview-scenario-options"/);
+  assert.match(rootIndex, /src="src\/admin\/app\.js\?v=2026-04-07-1"/);
   assert.doesNotMatch(rootIndex, /http-equiv="refresh"/);
 
   const adminApp = fs.readFileSync(path.join(projectRoot, 'src', 'admin', 'app.js'), 'utf8');
