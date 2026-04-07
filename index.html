@@ -2,10 +2,414 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0;url=public/index.html">
-  <title>Redirecting…</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://djqizrxa6f10j.cloudfront.net; style-src 'self' 'unsafe-inline' https://djqizrxa6f10j.cloudfront.net; font-src 'self' https://d1howb1wwyap5o.cloudfront.net https://ec-icons.shopsettings.com; img-src 'self' data:; connect-src 'self' https://app.ecwid.com">
+  <meta name="referrer" content="no-referrer">
+  <title>Accessibility Friction Overlay</title>
+  <link rel="icon" href="assets/marketplace/app-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://djqizrxa6f10j.cloudfront.net/ecwid-sdk/css/1.3.20/ecwid-app-ui.css">
+  <script src="https://djqizrxa6f10j.cloudfront.net/ecwid-sdk/js/1.2.9/ecwid-app.js"></script>
+  <style>
+    :root {
+      --afo-paper: #F9F9F9;
+      --afo-ink: #1D1D1D;
+      --afo-muted: #666666;
+      --afo-accent: #E81C24;
+      --afo-border: rgba(29, 29, 29, 0.12);
+      --afo-panel: #FFFFFF;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      color: var(--afo-ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      background: #F4F4F4;
+    }
+
+    .afo-shell {
+      max-width: 1220px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .afo-masthead,
+    .afo-panel,
+    .afo-card,
+    .afo-feed-item,
+    .afo-hotspot,
+    .afo-recommendation {
+      border-radius: 12px;
+      border: 1px solid var(--afo-border);
+      background: var(--afo-panel);
+      box-shadow: 0 4px 12px rgba(29, 29, 29, 0.05);
+    }
+
+    .afo-masthead {
+      padding: 1.5rem 2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(260px, 0.8fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .afo-lightspeed-logo {
+      display: block;
+      margin-bottom: 2rem;
+    }
+    
+    .afo-lightspeed-logo svg {
+      height: 32px; /* Ensure scale rules, minimum width usually covers height proportionally */
+      width: auto;
+    }
+
+    .afo-eyebrow,
+    .afo-section-label,
+    .afo-note {
+      margin: 0;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      color: var(--afo-muted);
+      font-weight: 600;
+    }
+
+    .afo-masthead h1 {
+      margin: 0.5rem 0 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--afo-ink);
+    }
+
+    .afo-masthead p,
+    .afo-panel p,
+    .afo-recommendation p,
+    .afo-feed-item p,
+    .afo-empty,
+    .afo-helper {
+      color: var(--afo-muted);
+      line-height: 1.65;
+    }
+
+    .afo-stack {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    }
+
+    .afo-panel {
+      padding: 1.25rem;
+    }
+
+    .afo-panel h2,
+    .afo-panel h3,
+    .afo-card h3,
+    .afo-recommendation h3 {
+      margin: 0;
+    }
+
+    .afo-controls,
+    .afo-settings-grid,
+    .afo-preview-grid,
+    .afo-metrics-grid,
+    .afo-results-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .afo-settings-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .afo-field,
+    .afo-toggle {
+      display: grid;
+      gap: 8px;
+    }
+
+    .afo-toggle {
+      padding: 0.9rem 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(29, 29, 29, 0.1);
+      background: #FAFAFA;
+      transition: border-color 0.2s;
+    }
+
+    .afo-toggle:hover {
+      border-color: rgba(29, 29, 29, 0.25);
+    }
+
+    .afo-toggle strong {
+      font-size: 0.98rem;
+      color: var(--afo-ink);
+    }
+
+    .afo-input,
+    .afo-textarea,
+    .afo-select {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid rgba(29, 29, 29, 0.15);
+      background: #FFFFFF;
+      padding: 0.78rem 0.9rem;
+      font: inherit;
+      color: var(--afo-ink);
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+    
+    .afo-input:focus,
+    .afo-textarea:focus,
+    .afo-select:focus {
+      outline: none;
+      border-color: var(--afo-accent);
+      box-shadow: 0 0 0 3px rgba(232, 28, 36, 0.1);
+    }
+
+    .afo-textarea {
+      min-height: 250px;
+      resize: vertical;
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.9rem;
+    }
+
+    .afo-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .afo-metrics-grid {
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    }
+
+    .afo-card {
+      padding: 1.25rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .afo-card h3 {
+      font-size: 0.95rem;
+      color: var(--afo-ink);
+    }
+
+    .afo-card p {
+      margin: 0.55rem 0 0;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 2.3rem;
+      color: var(--afo-accent);
+    }
+
+    .afo-card small {
+      display: block;
+      margin-top: 0.55rem;
+      color: var(--afo-muted);
+      line-height: 1.55;
+    }
+
+    .afo-results-grid {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr) minmax(0, 0.9fr);
+    }
+
+    .afo-feed,
+    .afo-hotspots,
+    .afo-recommendations {
+      display: grid;
+      gap: 12px;
+      max-height: 560px;
+      overflow: auto;
+    }
+
+    .afo-feed-item,
+    .afo-hotspot,
+    .afo-recommendation {
+      padding: 1rem;
+    }
+
+    .afo-feed-item header,
+    .afo-hotspot {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .afo-feed-item__meta,
+    .afo-recommendation__tone,
+    .afo-preview-status {
+      display: inline-flex;
+      margin-top: 0.55rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(232, 28, 36, 0.1);
+      color: var(--afo-accent);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .afo-preview-status.is-active {
+      background: #1D1D1D;
+      color: #FFFFFF;
+    }
+
+    .afo-hotspot b,
+    .afo-recommendation strong {
+      color: var(--afo-ink);
+    }
+
+    @media (max-width: 980px) {
+      .afo-masthead,
+      .afo-stack,
+      .afo-results-grid,
+      .afo-settings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <p>Redirecting to <a href="public/index.html">the control room</a>…</p>
+  <main class="afo-shell">
+    <section class="afo-masthead">
+      <div>
+        <p class="afo-eyebrow">Merchant Accessibility Desk</p>
+        <h1>Accessibility<br/>Friction Overlay</h1>
+        <p>This version is designed as a merchant-facing control room. No database, no Redis, and no long-running Node server are required in production. The admin page is the main product surface for business owners, while the storefront script is a lightweight collector used for merchant-run QA walkthroughs and preview drills.</p>
+      </div>
+      <div>
+        <p class="afo-section-label">Deployment Model</p>
+        <p><strong>Store:</strong> <span id="afo-store-id">demo-store</span></p>
+        <p><strong>Runtime:</strong> Static HTML, JS, and CSS on any HTTPS host.</p>
+        <p><strong>Tradeoff:</strong> No cross-device live dashboard stream without a backend.</p>
+      </div>
+    </section>
+
+    <section class="afo-stack">
+      <section class="afo-panel afo-controls">
+        <div>
+          <p class="afo-section-label">Settings</p>
+          <h2>Storefront Tracking Controls</h2>
+          <p class="afo-helper">These settings are saved only in this browser so a business owner can generate a deployment snippet and run preview drills without a server-side settings API.</p>
+        </div>
+
+        <div class="afo-settings-grid">
+          <label class="afo-toggle">
+            <input type="checkbox" id="feature-enabled" checked>
+            <strong>Merchant walkthrough tracking</strong>
+            <span>Collect friction signals during merchant-run QA sessions and internal walkthroughs.</span>
+          </label>
+
+          <label class="afo-toggle">
+            <input type="checkbox" id="track-catalog" checked>
+            <strong>Catalog tracking</strong>
+            <span>Include product listing and catalog browse interactions during merchant testing.</span>
+          </label>
+
+          <label class="afo-toggle">
+            <input type="checkbox" id="overlay-visible">
+            <strong>Merchant debug overlay</strong>
+            <span>Render the floating debug panel only when you intentionally want storefront-side QA helpers.</span>
+          </label>
+
+          <label class="afo-toggle">
+            <input type="checkbox" id="auto-open-overlay">
+            <strong>Auto-open debug overlay</strong>
+            <span>Open the debug panel automatically for merchant demos and walkthrough sessions.</span>
+          </label>
+
+          <label class="afo-field">
+            <span>Buffer lifetime (seconds)</span>
+            <input id="buffer-ttl" class="afo-input" type="number" min="30" max="300" value="90">
+          </label>
+
+          <label class="afo-field">
+            <span>Max events per second</span>
+            <input id="max-events-per-second" class="afo-input" type="number" min="5" max="50" value="20">
+          </label>
+
+          <label class="afo-field">
+            <span>Max buffered events</span>
+            <input id="max-buffer-events" class="afo-input" type="number" min="25" max="500" value="150">
+          </label>
+
+          <label class="afo-field">
+            <span>Static asset base URL</span>
+            <input id="snippet-base-url" class="afo-input" type="url" placeholder="https://your-static-host.example.com/accessibility-friction-overlay">
+          </label>
+        </div>
+
+        <div class="afo-actions">
+          <button id="save-btn" class="btn btn-default btn-medium">Save Local Settings</button>
+          <div id="status-message"></div>
+        </div>
+      </section>
+
+      <section class="afo-panel afo-preview-grid">
+        <div>
+          <p class="afo-section-label">Deploy</p>
+          <h2>Paste-Ready Storefront Loader</h2>
+          <p class="afo-helper">Paste this into Control Panel → Design → Custom JavaScript. It installs the owner-configured collector, keeps customer-facing UI hidden by default, and loads assets from your static host.</p>
+        </div>
+
+        <textarea id="deployment-snippet" class="afo-textarea" spellcheck="false" readonly></textarea>
+
+        <div class="afo-actions">
+          <button id="copy-snippet-btn" class="btn btn-default btn-medium">Copy Snippet</button>
+        </div>
+      </section>
+    </section>
+
+    <section class="afo-panel">
+      <div class="afo-actions" style="justify-content: space-between; align-items: end;">
+        <div>
+          <p class="afo-section-label">Preview</p>
+          <h2>Control Room Walkthrough</h2>
+          <p id="preview-status" class="afo-preview-status">Preview Off</p>
+          <p id="preview-label" class="afo-helper">Turn on preview to simulate merchant demo data without relying on live storefront traffic.</p>
+          <p id="preview-outcome" class="afo-helper">Best for merchant demos, revenue reviews, and final-step checkout QA.</p>
+        </div>
+        <div class="afo-actions">
+          <label class="afo-field" style="min-width: 260px; margin-bottom: 10px;">
+            <span>Scenario</span>
+            <select id="preview-scenario" class="afo-select"></select>
+          </label>
+          <button id="preview-toggle-btn" class="btn btn-primary btn-medium">Start Preview</button>
+        </div>
+      </div>
+
+      <div id="accessibility-friction-overlay-metrics" class="afo-metrics-grid"></div>
+
+      <div class="afo-results-grid">
+        <section class="afo-panel" style="padding: 1rem;">
+          <h3>Live Feed</h3>
+          <div id="accessibility-friction-overlay-feed" class="afo-feed"></div>
+        </section>
+
+        <section class="afo-panel" style="padding: 1rem;">
+          <h3>Hotspots</h3>
+          <div id="accessibility-friction-overlay-hotspots" class="afo-hotspots"></div>
+        </section>
+
+        <section class="afo-panel" style="padding: 1rem;">
+          <h3>Recommended Actions</h3>
+          <div id="accessibility-friction-overlay-recommendations" class="afo-recommendations"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="src/shared/core.js"></script>
+  <script>
+    window.AccessibilityFrictionOverlayEcwidAdminConfig = {
+      appId: 'accessibility-overlay-dev'
+    };
+  </script>
+  <script src="src/admin/app.js"></script>
 </body>
 </html>
