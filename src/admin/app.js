@@ -367,7 +367,11 @@
   }
 
   function getSuggestedBaseUrl() {
-    var href = String(window.location.href);
+    if (appConfig.snippetBaseUrl) {
+      return appConfig.snippetBaseUrl;
+    }
+
+    var href = String(window.location.href).split('?')[0].split('#')[0];
     return href.slice(0, href.indexOf('/public/') > -1 ? href.indexOf('/public/') : href.lastIndexOf('/'));
   }
 
