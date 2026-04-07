@@ -67,7 +67,11 @@
     }
 
     if (window.EcwidApp && typeof window.EcwidApp.init === 'function') {
-      var app = window.EcwidApp.init({ appId: appConfig.appId || 'accessibility-friction-overlay' });
+      var app = window.EcwidApp.init({
+        app_id: appConfig.appId || 'accessibility-friction-overlay',
+        autoloadedflag: true,
+        autoheight: true,
+      });
 
       listenForUninstall();
 

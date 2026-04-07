@@ -33,6 +33,11 @@ test('build script creates the expected static package layout', () => {
   assert.match(rootIndex, /src="src\/shared\/core\.js"/);
   assert.doesNotMatch(rootIndex, /http-equiv="refresh"/);
 
+  const adminApp = fs.readFileSync(path.join(projectRoot, 'src', 'admin', 'app.js'), 'utf8');
+  assert.match(adminApp, /EcwidApp\.init\(\{\s*app_id:/s);
+  assert.match(adminApp, /autoloadedflag:\s*true/);
+  assert.match(adminApp, /autoheight:\s*true/);
+
   const buildInfo = JSON.parse(fs.readFileSync(path.join(distRoot, 'build-info.json'), 'utf8'));
   assert.equal(buildInfo.layout.appIcon, 'assets/marketplace/app-icon.svg');
   assert.equal(buildInfo.layout.admin, 'index.html');
