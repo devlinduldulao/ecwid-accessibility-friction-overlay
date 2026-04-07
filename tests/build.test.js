@@ -41,6 +41,8 @@ test('build script creates the expected static package layout', () => {
   assert.match(adminApp, /EcwidApp\.init\(\{\s*app_id:/s);
   assert.match(adminApp, /autoloadedflag:\s*true/);
   assert.match(adminApp, /autoheight:\s*true/);
+  // getPayload must be called synchronously (SDK returns payload, not via callback)
+  assert.match(adminApp, /var payload = (?:window\.)?EcwidApp\.getPayload\(\)/);
 
   const buildInfo = JSON.parse(fs.readFileSync(path.join(distRoot, 'build-info.json'), 'utf8'));
   assert.equal(buildInfo.layout.appIcon, 'assets/marketplace/app-icon.svg');

@@ -91,7 +91,7 @@
     }
 
     if (window.EcwidApp && typeof window.EcwidApp.init === 'function') {
-      var app = window.EcwidApp.init({
+      window.EcwidApp.init({
         app_id: appConfig.appId || 'accessibility-friction-overlay',
         autoloadedflag: true,
         autoheight: true,
@@ -99,20 +99,13 @@
 
       listenForUninstall();
 
-      if (app && typeof app.getPayload === 'function') {
-        app.getPayload(function (payload) {
-          storeId = String(payload && payload.store_id || 'demo-store');
-          initializeDashboard();
-        });
-        return;
-      }
-
+      // EcwidApp.getPayload() is synchronous — returns the decoded payload
+      // object directly (parsed from the URL hash set by the Ecwid CP iframe).
       if (typeof window.EcwidApp.getPayload === 'function') {
-        window.EcwidApp.getPayload(function (payload) {
-        storeId = String(payload && payload.store_id || 'demo-store');
-        initializeDashboard();
-        });
-        return;
+        var payload = window.EcwidApp.getPayload();
+        if (payload && payload.store_id) {
+          storeId = String(payload.store_id);
+        }
       }
     }
 
