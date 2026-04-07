@@ -175,6 +175,95 @@
       font-size: 0.9rem;
     }
 
+    .afo-menu {
+      position: relative;
+      min-width: 260px;
+    }
+
+    .afo-menu__toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(29, 29, 29, 0.15);
+      background: #FFFFFF;
+      padding: 0.78rem 0.9rem;
+      color: var(--afo-ink);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
+    .afo-menu__toggle::after {
+      content: "";
+      flex: 0 0 auto;
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg) translateY(-2px);
+      opacity: 0.7;
+    }
+
+    .afo-menu__toggle:focus {
+      outline: none;
+      border-color: var(--afo-accent);
+      box-shadow: 0 0 0 3px rgba(232, 28, 36, 0.1);
+    }
+
+    .afo-menu__list {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: grid;
+      gap: 4px;
+      padding: 6px;
+      border-radius: 10px;
+      border: 1px solid var(--afo-border);
+      background: #FFFFFF;
+      box-shadow: 0 10px 24px rgba(29, 29, 29, 0.12);
+    }
+
+    .afo-menu__option {
+      width: 100%;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      padding: 0.7rem 0.75rem;
+      color: var(--afo-ink);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .afo-menu__option:hover,
+    .afo-menu__option.is-active {
+      background: rgba(232, 28, 36, 0.08);
+    }
+
+    .afo-codeblock {
+      margin: 0;
+      min-height: 250px;
+      max-height: 420px;
+      overflow: auto;
+      border-radius: 6px;
+      border: 1px solid rgba(29, 29, 29, 0.15);
+      background: #FFFFFF;
+      padding: 0.78rem 0.9rem;
+      box-sizing: border-box;
+      color: var(--afo-ink);
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
     .afo-actions {
       display: flex;
       flex-wrap: wrap;
@@ -356,7 +445,8 @@
           <p class="afo-helper">Paste this into Control Panel → Design → Custom JavaScript. It installs the owner-configured collector, keeps customer-facing UI hidden by default, and loads assets from your static host.</p>
         </div>
 
-        <textarea id="deployment-snippet" class="afo-textarea" spellcheck="false" readonly></textarea>
+        <textarea id="deployment-snippet" class="afo-textarea" spellcheck="false" readonly aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;opacity:0;pointer-events:none;"></textarea>
+        <pre id="deployment-snippet-preview" class="afo-codeblock"></pre>
 
         <div class="afo-actions">
           <button id="copy-snippet-btn" class="btn btn-default btn-medium">Copy Snippet</button>
@@ -376,7 +466,13 @@
         <div class="afo-actions">
           <label class="afo-field" style="min-width: 260px; margin-bottom: 10px;">
             <span>Scenario</span>
-            <select id="preview-scenario" class="afo-select"></select>
+            <select id="preview-scenario" class="afo-select" hidden aria-hidden="true"></select>
+            <div class="afo-menu">
+              <button id="preview-scenario-toggle" class="afo-menu__toggle" type="button" aria-haspopup="true" aria-expanded="false">
+                <span id="preview-scenario-label"></span>
+              </button>
+              <div id="preview-scenario-options" class="afo-menu__list" hidden></div>
+            </div>
           </label>
           <button id="preview-toggle-btn" class="btn btn-primary btn-medium">Start Preview</button>
         </div>

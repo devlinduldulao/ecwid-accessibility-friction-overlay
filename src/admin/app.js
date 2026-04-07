@@ -26,7 +26,11 @@
     hotspots: document.getElementById('accessibility-friction-overlay-hotspots'),
     recommendations: document.getElementById('accessibility-friction-overlay-recommendations'),
     snippet: document.getElementById('deployment-snippet'),
+    snippetPreview: document.getElementById('deployment-snippet-preview'),
     scenario: document.getElementById('preview-scenario'),
+    scenarioToggle: document.getElementById('preview-scenario-toggle'),
+    scenarioLabel: document.getElementById('preview-scenario-label'),
+    scenarioOptions: document.getElementById('preview-scenario-options'),
     baseUrl: document.getElementById('snippet-base-url'),
     enabled: document.getElementById('feature-enabled'),
     trackCatalog: document.getElementById('track-catalog'),
@@ -43,6 +47,8 @@
   var settings = core.getDefaultSettings();
   var previewEnabled = false;
   var previewTimer = null;
+  var currentSnippet = '';
+  var scenarioMenuOpen = false;
 
   bindEvents();
   initContext();
@@ -51,12 +57,30 @@
     elements.saveButton.addEventListener('click', saveSettings);
     elements.copyButton.addEventListener('click', copySnippet);
     elements.previewButton.addEventListener('click', togglePreview);
+    [
+      elements.enabled,
+      elements.trackCatalog,
+      elements.overlayVisible,
+      elements.autoOpenOverlay,
+      elements.bufferTtl,
+      elements.maxEventsPerSecond,
+      elements.maxBufferEvents,
+      elements.baseUrl,
+    ].forEach(function (element) {
+      element.addEventListener('input', handleLiveUpdate);
+      element.addEventListener('change', handleLiveUpdate);
+    });
     elements.scenario.addEventListener('change', function () {
       settings.previewScenario = elements.scenario.value;
       persistSettings();
+      syncScenarioMenu();
       updatePreview();
       updateSnippet();
     });
+    elements.scenarioToggle.addEventListener('click', toggleScenarioMenu);
+    elements.scenarioOptions.addEventListener('click', handleScenarioOptionClick);
+    document.addEventListener('click', handleDocumentClick);
+    document.addEventListener('keydown', handleDocumentKeydown);
   }
 
   function initContext() {
@@ -125,6 +149,16 @@
       var selected = slug === settings.previewScenario ? ' selected' : '';
       return '<option value="' + escapeHtml(slug) + '"' + selected + '>' + escapeHtml(scenarios[slug].label) + '</option>';
     }).join('');
+
+    elements.scenarioOptions.innerHTML = Object.keys(scenarios).map(function (slug) {
+      return [
+        '<button type="button" class="afo-menu__option" data-scenario-value="' + escapeHtml(slug) + '">',
+        escapeHtml(scenarios[slug].label),
+        '</button>',
+      ].join('');
+    }).join('');
+
+    syncScenarioMenu();
   }
 
   function hydrateForm() {
@@ -137,6 +171,7 @@
     elements.maxBufferEvents.value = String(settings.maxBufferEvents);
     elements.baseUrl.value = settings.snippetBaseUrl;
     elements.scenario.value = settings.previewScenario;
+    syncScenarioMenu();
   }
 
   function readForm() {
@@ -177,7 +212,15 @@
 
   function updateSnippet() {
     var snippet = buildLoaderSnippet(readForm());
+    currentSnippet = snippet;
     elements.snippet.value = snippet;
+    elements.snippet.defaultValue = snippet;
+    elements.snippet.textContent = snippet;
+
+    if (elements.snippetPreview) {
+      elements.snippetPreview.textContent = snippet;
+    }
+
     resizeIframe();
   }
 
@@ -216,7 +259,7 @@
   }
 
   function copySnippet() {
-    var value = elements.snippet.value;
+    var value = currentSnippet || elements.snippet.value || elements.snippet.textContent;
 
     if (!navigator.clipboard || !value) {
       showStatus('Clipboard access is unavailable in this browser.', 'error');
@@ -230,6 +273,69 @@
       .catch(function () {
         showStatus('Copy failed. Select the snippet manually.', 'error');
       });
+  }
+
+  function handleLiveUpdate() {
+    updateSnippet();
+  }
+
+  function syncScenarioMenu() {
+    var selectedOption = elements.scenario.options[elements.scenario.selectedIndex] || elements.scenario.options[0];
+
+    if (selectedOption && elements.scenarioLabel) {
+      elements.scenarioLabel.textContent = selectedOption.textContent;
+    }
+
+    Array.prototype.forEach.call(elements.scenarioOptions.querySelectorAll('[data-scenario-value]'), function (button) {
+      var isActive = button.getAttribute('data-scenario-value') === elements.scenario.value;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  }
+
+  function toggleScenarioMenu() {
+    scenarioMenuOpen = !scenarioMenuOpen;
+    renderScenarioMenuState();
+  }
+
+  function closeScenarioMenu() {
+    scenarioMenuOpen = false;
+    renderScenarioMenuState();
+  }
+
+  function renderScenarioMenuState() {
+    elements.scenarioOptions.hidden = !scenarioMenuOpen;
+    elements.scenarioToggle.setAttribute('aria-expanded', scenarioMenuOpen ? 'true' : 'false');
+  }
+
+  function handleScenarioOptionClick(event) {
+    var button = event.target.closest('[data-scenario-value]');
+    if (!button) {
+      return;
+    }
+
+    elements.scenario.value = button.getAttribute('data-scenario-value') || settings.previewScenario;
+    closeScenarioMenu();
+    elements.scenario.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  function handleDocumentClick(event) {
+    if (!scenarioMenuOpen) {
+      return;
+    }
+
+    if (event.target === elements.scenarioToggle || elements.scenarioToggle.contains(event.target) || elements.scenarioOptions.contains(event.target)) {
+      return;
+    }
+
+    closeScenarioMenu();
+  }
+
+  function handleDocumentKeydown(event) {
+    if (event.key === 'Escape' && scenarioMenuOpen) {
+      closeScenarioMenu();
+      elements.scenarioToggle.focus();
+    }
   }
 
   function togglePreview() {
