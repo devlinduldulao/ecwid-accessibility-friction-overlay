@@ -229,6 +229,11 @@
       box-shadow: 0 10px 24px rgba(29, 29, 29, 0.12);
     }
 
+    /* display:grid above overrides the UA-stylesheet [hidden] rule; restore it explicitly */
+    .afo-menu__list[hidden] {
+      display: none !important;
+    }
+
     .afo-menu__option {
       width: 100%;
       border: 0;

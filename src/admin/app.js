@@ -267,13 +267,29 @@
       return;
     }
 
-    copyTextToClipboard(value)
-      .then(function () {
-        showStatus('Snippet copied. Paste it into Design > Custom JavaScript.', 'success');
-      })
-      .catch(function () {
-        showStatus('Copy failed. Select the snippet manually.', 'error');
-      });
+    // Try execCommand synchronously first — must happen within the user-gesture
+    // tick. navigator.clipboard.writeText() is not reliable inside Ecwid's
+    // iframe because Ecwid does not grant clipboard-write permission to embedded
+    // apps, so any async fallback loses the user-gesture context.
+    if (tryCopyExecCommand(value)) {
+      showStatus('Snippet copied. Paste it into Design > Custom JavaScript.', 'success');
+      return;
+    }
+
+    // Secondary: async Clipboard API for top-level secure contexts where
+    // execCommand is unavailable (e.g. Firefox without user prefs).
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(value)
+        .then(function () {
+          showStatus('Snippet copied. Paste it into Design > Custom JavaScript.', 'success');
+        })
+        .catch(function () {
+          showStatus('Copy failed. Select the snippet text manually and copy it.', 'error');
+        });
+      return;
+    }
+
+    showStatus('Copy failed. Select the snippet text manually and copy it.', 'error');
   }
 
   function handleLiveUpdate() {
@@ -465,44 +481,22 @@
     buttons[safeIndex].focus();
   }
 
-  function copyTextToClipboard(value) {
-    if (navigator.clipboard && window.isSecureContext) {
-      return navigator.clipboard.writeText(value).catch(function () {
-        return fallbackCopyText(value);
-      });
-    }
-
-    return fallbackCopyText(value);
-  }
-
-  function fallbackCopyText(value) {
-    return new Promise(function (resolve, reject) {
+  function tryCopyExecCommand(value) {
+    try {
       var textarea = document.createElement('textarea');
       textarea.value = value;
       textarea.setAttribute('readonly', 'readonly');
-      textarea.style.position = 'fixed';
-      textarea.style.top = '0';
-      textarea.style.left = '-9999px';
-      textarea.style.opacity = '0';
-
+      textarea.style.cssText = 'position:fixed;top:0;left:-9999px;width:1px;height:1px;opacity:0;';
       document.body.appendChild(textarea);
       textarea.focus();
       textarea.select();
-      textarea.setSelectionRange(0, textarea.value.length);
-
-      try {
-        if (document.execCommand('copy')) {
-          document.body.removeChild(textarea);
-          resolve();
-          return;
-        }
-      } catch {
-        // Fall through to reject below.
-      }
-
+      textarea.setSelectionRange(0, value.length);
+      var result = document.execCommand('copy');
       document.body.removeChild(textarea);
-      reject(new Error('Copy command failed'));
-    });
+      return !!result;
+    } catch {
+      return false;
+    }
   }
 
   function togglePreview() {
