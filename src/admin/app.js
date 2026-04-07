@@ -25,7 +25,6 @@
     feed: document.getElementById('accessibility-friction-overlay-feed'),
     hotspots: document.getElementById('accessibility-friction-overlay-hotspots'),
     recommendations: document.getElementById('accessibility-friction-overlay-recommendations'),
-    snippet: document.getElementById('deployment-snippet'),
     snippetPreview: document.getElementById('deployment-snippet-preview'),
     scenario: document.getElementById('preview-scenario'),
     scenarioMenu: document.getElementById('preview-scenario-menu'),
@@ -213,9 +212,6 @@
   function updateSnippet() {
     var snippet = buildLoaderSnippet(readForm());
     currentSnippet = snippet;
-    elements.snippet.value = snippet;
-    elements.snippet.defaultValue = snippet;
-    elements.snippet.textContent = snippet;
 
     if (elements.snippetPreview) {
       elements.snippetPreview.textContent = snippet;
@@ -260,7 +256,7 @@
   }
 
   function copySnippet() {
-    var value = currentSnippet || elements.snippet.value || elements.snippet.textContent;
+    var value = currentSnippet || (elements.snippetPreview && elements.snippetPreview.textContent) || '';
 
     if (!value) {
       showStatus('Nothing to copy yet. Wait for the loader snippet to render.', 'error');

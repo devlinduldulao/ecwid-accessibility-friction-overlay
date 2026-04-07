@@ -12,8 +12,10 @@
     :root {
       --afo-paper: #F9F9F9;
       --afo-ink: #1D1D1D;
-      --afo-muted: #666666;
+      --afo-muted: #4F4F4F;
       --afo-accent: #E81C24;
+      --afo-accent-strong: #9F1117;
+      --afo-accent-soft: #FDEBEC;
       --afo-border: rgba(29, 29, 29, 0.12);
       --afo-panel: #FFFFFF;
     }
@@ -339,8 +341,8 @@
       margin-top: 0.55rem;
       padding: 0.25rem 0.5rem;
       border-radius: 4px;
-      background: rgba(232, 28, 36, 0.1);
-      color: var(--afo-accent);
+      background: var(--afo-accent-soft);
+      color: var(--afo-accent-strong);
       font-size: 0.74rem;
       font-weight: 700;
       letter-spacing: 0.05em;
@@ -450,7 +452,6 @@
           <p class="afo-helper">Paste this into Control Panel → Design → Custom JavaScript. It installs the owner-configured collector, keeps customer-facing UI hidden by default, and loads assets from your static host.</p>
         </div>
 
-        <textarea id="deployment-snippet" class="afo-textarea" spellcheck="false" readonly aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;opacity:0;pointer-events:none;"></textarea>
         <pre id="deployment-snippet-preview" class="afo-codeblock"></pre>
 
         <div class="afo-actions">
@@ -471,7 +472,7 @@
         <div class="afo-actions">
           <div class="afo-field" style="min-width: 260px; margin-bottom: 10px;">
             <span>Scenario</span>
-            <select id="preview-scenario" class="afo-select" hidden aria-hidden="true"></select>
+            <select id="preview-scenario" class="afo-select" hidden></select>
             <div id="preview-scenario-menu" class="afo-menu">
               <button id="preview-scenario-toggle" class="afo-menu__toggle" type="button" aria-haspopup="true" aria-expanded="false">
                 <span id="preview-scenario-label"></span>
