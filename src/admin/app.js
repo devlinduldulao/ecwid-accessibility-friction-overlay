@@ -28,6 +28,7 @@
     snippet: document.getElementById('deployment-snippet'),
     snippetPreview: document.getElementById('deployment-snippet-preview'),
     scenario: document.getElementById('preview-scenario'),
+    scenarioMenu: document.getElementById('preview-scenario-menu'),
     scenarioToggle: document.getElementById('preview-scenario-toggle'),
     scenarioLabel: document.getElementById('preview-scenario-label'),
     scenarioOptions: document.getElementById('preview-scenario-options'),
@@ -78,9 +79,13 @@
       updateSnippet();
     });
     elements.scenarioToggle.addEventListener('click', toggleScenarioMenu);
+    elements.scenarioToggle.addEventListener('keydown', handleScenarioToggleKeydown);
     elements.scenarioOptions.addEventListener('click', handleScenarioOptionClick);
-    document.addEventListener('click', handleDocumentClick);
+    elements.scenarioOptions.addEventListener('keydown', handleScenarioOptionsKeydown);
+    document.addEventListener('pointerdown', handleDocumentPointerDown);
     document.addEventListener('keydown', handleDocumentKeydown);
+    document.addEventListener('focusin', handleDocumentFocusIn);
+    window.addEventListener('blur', handleWindowBlur);
   }
 
   function initContext() {
@@ -290,6 +295,10 @@
   function toggleScenarioMenu() {
     scenarioMenuOpen = !scenarioMenuOpen;
     renderScenarioMenuState();
+
+    if (scenarioMenuOpen) {
+      focusScenarioOption(elements.scenario.value, 0);
+    }
   }
 
   function closeScenarioMenu() {
@@ -311,14 +320,15 @@
     elements.scenario.value = button.getAttribute('data-scenario-value') || settings.previewScenario;
     closeScenarioMenu();
     elements.scenario.dispatchEvent(new Event('change', { bubbles: true }));
+    elements.scenarioToggle.focus();
   }
 
-  function handleDocumentClick(event) {
+  function handleDocumentPointerDown(event) {
     if (!scenarioMenuOpen) {
       return;
     }
 
-    if (event.target === elements.scenarioToggle || elements.scenarioToggle.contains(event.target) || elements.scenarioOptions.contains(event.target)) {
+    if (elements.scenarioMenu.contains(event.target)) {
       return;
     }
 
@@ -330,6 +340,125 @@
       closeScenarioMenu();
       elements.scenarioToggle.focus();
     }
+  }
+
+  function handleDocumentFocusIn(event) {
+    if (!scenarioMenuOpen) {
+      return;
+    }
+
+    if (elements.scenarioMenu.contains(event.target)) {
+      return;
+    }
+
+    closeScenarioMenu();
+  }
+
+  function handleWindowBlur() {
+    if (scenarioMenuOpen) {
+      closeScenarioMenu();
+    }
+  }
+
+  function handleScenarioToggleKeydown(event) {
+    if (event.key === 'Tab' && scenarioMenuOpen) {
+      closeScenarioMenu();
+      return;
+    }
+
+    if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      if (!scenarioMenuOpen) {
+        scenarioMenuOpen = true;
+        renderScenarioMenuState();
+      }
+      focusScenarioOption(elements.scenario.value, 0);
+      return;
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (!scenarioMenuOpen) {
+        scenarioMenuOpen = true;
+        renderScenarioMenuState();
+      }
+      focusScenarioOption(elements.scenario.value, -1);
+    }
+  }
+
+  function handleScenarioOptionsKeydown(event) {
+    var buttons = getScenarioButtons();
+    var currentIndex = buttons.indexOf(document.activeElement);
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      focusScenarioButtonByIndex(currentIndex + 1);
+      return;
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      focusScenarioButtonByIndex(currentIndex - 1);
+      return;
+    }
+
+    if (event.key === 'Home') {
+      event.preventDefault();
+      focusScenarioButtonByIndex(0);
+      return;
+    }
+
+    if (event.key === 'End') {
+      event.preventDefault();
+      focusScenarioButtonByIndex(buttons.length - 1);
+      return;
+    }
+
+    if (event.key === 'Tab') {
+      closeScenarioMenu();
+    }
+  }
+
+  function getScenarioButtons() {
+    return Array.prototype.slice.call(elements.scenarioOptions.querySelectorAll('[data-scenario-value]'));
+  }
+
+  function focusScenarioOption(value, offset) {
+    var buttons = getScenarioButtons();
+    var index = buttons.findIndex(function (button) {
+      return button.getAttribute('data-scenario-value') === value;
+    });
+
+    if (index < 0) {
+      index = 0;
+    }
+
+    if (offset > 0) {
+      index = Math.min(buttons.length - 1, index + offset);
+    }
+
+    if (offset < 0) {
+      index = Math.max(0, index + offset);
+    }
+
+    focusScenarioButtonByIndex(index);
+  }
+
+  function focusScenarioButtonByIndex(index) {
+    var buttons = getScenarioButtons();
+    if (!buttons.length) {
+      return;
+    }
+
+    var safeIndex = index;
+    if (safeIndex < 0) {
+      safeIndex = buttons.length - 1;
+    }
+    if (safeIndex >= buttons.length) {
+      safeIndex = 0;
+    }
+
+    buttons[safeIndex].focus();
   }
 
   function togglePreview() {
