@@ -118,9 +118,11 @@
   }
 
   function initializeDashboard() {
+    scenarioMenuOpen = false;
     loadSettings();
     hydrateScenarioOptions();
     hydrateForm();
+    renderScenarioMenuState();
     updateSnippet();
     updatePreview();
     resizeIframe();
@@ -260,12 +262,12 @@
   function copySnippet() {
     var value = currentSnippet || elements.snippet.value || elements.snippet.textContent;
 
-    if (!navigator.clipboard || !value) {
-      showStatus('Clipboard access is unavailable in this browser.', 'error');
+    if (!value) {
+      showStatus('Nothing to copy yet. Wait for the loader snippet to render.', 'error');
       return;
     }
 
-    navigator.clipboard.writeText(value)
+    copyTextToClipboard(value)
       .then(function () {
         showStatus('Snippet copied. Paste it into Design > Custom JavaScript.', 'success');
       })
@@ -290,6 +292,8 @@
       button.classList.toggle('is-active', isActive);
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
+
+    renderScenarioMenuState();
   }
 
   function toggleScenarioMenu() {
@@ -459,6 +463,46 @@
     }
 
     buttons[safeIndex].focus();
+  }
+
+  function copyTextToClipboard(value) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(value).catch(function () {
+        return fallbackCopyText(value);
+      });
+    }
+
+    return fallbackCopyText(value);
+  }
+
+  function fallbackCopyText(value) {
+    return new Promise(function (resolve, reject) {
+      var textarea = document.createElement('textarea');
+      textarea.value = value;
+      textarea.setAttribute('readonly', 'readonly');
+      textarea.style.position = 'fixed';
+      textarea.style.top = '0';
+      textarea.style.left = '-9999px';
+      textarea.style.opacity = '0';
+
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      textarea.setSelectionRange(0, textarea.value.length);
+
+      try {
+        if (document.execCommand('copy')) {
+          document.body.removeChild(textarea);
+          resolve();
+          return;
+        }
+      } catch {
+        // Fall through to reject below.
+      }
+
+      document.body.removeChild(textarea);
+      reject(new Error('Copy command failed'));
+    });
   }
 
   function togglePreview() {
