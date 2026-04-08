@@ -43,7 +43,7 @@
   };
 
   var appConfig = window.AccessibilityFrictionOverlayEcwidAdminConfig || {};
-  var storeId = 'demo-store';
+  var storeId = '';
   var settings = core.getDefaultSettings();
   var previewEnabled = false;
   var previewTimer = null;
@@ -139,7 +139,7 @@
       settings.snippetBaseUrl = getSuggestedBaseUrl();
     }
 
-    elements.storeLabel.textContent = storeId;
+    elements.storeLabel.textContent = storeId || 'Preview mode';
   }
 
   function hydrateScenarioOptions() {
