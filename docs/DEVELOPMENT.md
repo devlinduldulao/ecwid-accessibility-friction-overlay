@@ -29,7 +29,7 @@ Use `public/storefront-test.html` for manual testing.
 Important details:
 
 - Replace `STORE_ID` in `public/storefront-test.html` with a real Ecwid store ID.
-- Add `?afo_debug=1` to force the merchant debug overlay open.
+- Add `?afo_debug=YOUR_TOKEN` to force the merchant debug overlay open (the token is generated in the admin dashboard; `?afo_debug=1` no longer works).
 - Add `?afo_preview=checkout-friction` to inject a synthetic preview batch into the storefront overlay.
 - Press `Alt+Shift+F` on the storefront to toggle the merchant debug overlay.
 

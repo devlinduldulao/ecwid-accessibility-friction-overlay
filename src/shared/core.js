@@ -68,6 +68,7 @@
     autoOpenOverlay: false,
     previewScenario: 'checkout-friction',
     snippetBaseUrl: DEFAULT_SNIPPET_BASE_URL,
+    debugToken: '',
   };
 
   var PREVIEW_SCENARIOS = {
@@ -288,6 +289,7 @@
       autoOpenOverlay: normalizeBoolean(source.autoOpenOverlay, DEFAULT_SETTINGS.autoOpenOverlay),
       previewScenario: previewScenario,
       snippetBaseUrl: normalizeText(source.snippetBaseUrl, DEFAULT_SETTINGS.snippetBaseUrl),
+      debugToken: normalizeText(source.debugToken, DEFAULT_SETTINGS.debugToken),
     };
   }
 
@@ -523,6 +525,17 @@
     return 'afo-' + Math.random().toString(36).slice(2, 10) + '-' + Date.now().toString(36);
   }
 
+  function generateDebugToken() {
+    if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+      var bytes = new Uint8Array(16);
+      crypto.getRandomValues(bytes);
+      return Array.prototype.map.call(bytes, function (b) {
+        return ('0' + b.toString(16)).slice(-2);
+      }).join('');
+    }
+    return Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+  }
+
   return {
     DEFAULT_SNIPPET_BASE_URL: DEFAULT_SNIPPET_BASE_URL,
     appendEvents: appendEvents,
@@ -530,6 +543,7 @@
     buildStorageKeys: buildStorageKeys,
     buildSummary: buildSummary,
     createPreviewEvents: createPreviewEvents,
+    generateDebugToken: generateDebugToken,
     generateIdentifier: generateIdentifier,
     getDefaultSettings: getDefaultSettings,
     getPreviewScenarios: getPreviewScenarios,

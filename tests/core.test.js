@@ -36,6 +36,7 @@ test('normalizeSettings clamps values, preserves booleans, and falls back for in
   assert.equal(settings.autoOpenOverlay, true);
   assert.equal(settings.previewScenario, 'checkout-friction');
   assert.equal(settings.snippetBaseUrl, core.DEFAULT_SNIPPET_BASE_URL);
+  assert.equal(settings.debugToken, '');
 });
 
 test('buildStorageKeys sanitizes store ids for local storage usage', () => {

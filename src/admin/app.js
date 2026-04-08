@@ -45,6 +45,7 @@
     snippetHealth: document.getElementById('snippet-health'),
     snippetHealthSummary: document.getElementById('snippet-health-summary'),
     snippetHealthDetails: document.getElementById('snippet-health-details'),
+    verifyTip: document.querySelector('.afo-verify-tip'),
   };
 
   var appConfig = window.AccessibilityFrictionOverlayEcwidAdminConfig || {};
@@ -181,6 +182,11 @@
       settings.snippetBaseUrl = getSuggestedBaseUrl();
     }
 
+    if (!settings.debugToken) {
+      settings.debugToken = core.generateDebugToken();
+      persistSettings();
+    }
+
     elements.storeLabel.textContent = storeId || (hasEcwidContext ? 'Store context unavailable' : 'Preview mode');
   }
 
@@ -216,7 +222,7 @@
   }
 
   function readForm() {
-    return core.normalizeSettings({
+    var formSettings = core.normalizeSettings({
       enabled: elements.enabled.checked,
       trackCatalog: elements.trackCatalog.checked,
       overlayVisible: elements.overlayVisible.checked,
@@ -227,6 +233,8 @@
       previewScenario: elements.scenario.value,
       snippetBaseUrl: elements.baseUrl.value,
     });
+    formSettings.debugToken = settings.debugToken || '';
+    return formSettings;
   }
 
   function saveSettings() {
@@ -253,14 +261,25 @@
   }
 
   function updateSnippet() {
-    var snippet = buildLoaderSnippet(readForm());
+    var snapshot = readForm();
+    var snippet = buildLoaderSnippet(snapshot);
     currentSnippet = snippet;
 
     if (elements.snippetPreview) {
       elements.snippetPreview.textContent = snippet;
     }
 
+    updateVerifyTip(snapshot.debugToken);
     resizeIframe();
+  }
+
+  function updateVerifyTip(token) {
+    if (!elements.verifyTip) { return; }
+    var param = token ? '?afo_debug=' + encodeURIComponent(token) : '?afo_debug=TOKEN';
+    elements.verifyTip.innerHTML = '<strong>How to confirm the snippet is active on your storefront:</strong><br>' +
+      'Open your live store and append <code>' + escapeHtml(param) + '</code> to the URL. ' +
+      'The debug token is unique to your deployment — only you can open the overlay. ' +
+      'You can also enable the debug overlay in Settings above and run a walkthrough.';
   }
 
   function buildLoaderSnippet(snapshot) {
@@ -275,6 +294,7 @@
       overlayVisible: snapshot.overlayVisible,
       autoOpenOverlay: snapshot.autoOpenOverlay,
       previewScenario: snapshot.previewScenario,
+      debugToken: snapshot.debugToken,
     };
 
     return [

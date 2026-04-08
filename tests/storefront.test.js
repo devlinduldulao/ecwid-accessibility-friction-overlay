@@ -27,6 +27,7 @@ function createHarness(options = {}) {
     maxEventsPerSecond: 20,
     maxBufferEvents: 150,
     previewScenario: 'checkout-friction',
+    debugToken: '',
   }, options.config || {});
   window.Ecwid = {
     OnPageLoaded: {

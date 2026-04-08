@@ -33,7 +33,7 @@
 </head>
 <body>
   <div class="dev-banner">
-    <strong>Development Mode</strong> — This page uses your test store 132959256. Add <code>?afo_preview=checkout-friction&afo_debug=1</code> to the URL to auto-load preview events and open the merchant debug overlay.
+    <strong>Development Mode</strong> — This page uses your test store 132959256. Add <code>?afo_preview=checkout-friction&amp;afo_debug=dev-test-token</code> to the URL to auto-load preview events and open the merchant debug overlay.
   </div>
 
   <h1>Storefront Preview</h1>
@@ -49,7 +49,8 @@
       bufferTtl: 90,
       maxEventsPerSecond: 20,
       maxBufferEvents: 150,
-      previewScenario: 'checkout-friction'
+      previewScenario: 'checkout-friction',
+      debugToken: 'dev-test-token'
     };
   </script>
   <script src="https://app.ecwid.com/script.js?132959256" charset="utf-8"></script>

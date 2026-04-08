@@ -693,8 +693,9 @@
   }
 
   function hasDebugFlag() {
+    if (!config.debugToken) { return false; }
     var params = new URLSearchParams(window.location.search);
-    return params.get('afo_debug') === '1';
+    return params.get('afo_debug') === config.debugToken;
   }
 
   function formatTime(timestamp) {
