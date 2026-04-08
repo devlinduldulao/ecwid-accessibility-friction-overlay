@@ -336,7 +336,8 @@
 
     .afo-feed-item__meta,
     .afo-recommendation__tone,
-    .afo-preview-status {
+    .afo-preview-status,
+    .afo-build-badge {
       display: inline-flex;
       margin-top: 0.55rem;
       padding: 0.25rem 0.5rem;
@@ -347,6 +348,10 @@
       font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
+    }
+
+    .afo-build-badge {
+      margin-top: 0.35rem;
     }
 
     .afo-preview-status.is-active {
@@ -521,6 +526,7 @@
         <div>
           <p class="afo-section-label">Deploy</p>
           <h2>Paste-Ready Storefront Loader</h2>
+          <p id="build-version-badge" class="afo-build-badge">Build unknown</p>
           <p class="afo-helper"><strong>Option A:</strong> Paste this into Ecwid Admin → Website → Design → Custom JavaScript code. The snippet includes its own &lt;script&gt; tags — paste it exactly as shown.<br><strong>Option B:</strong> For published apps, set <code>customJsUrl</code> in your app's details at #develop-apps instead. See the Deployment Guide for details.</p>
         </div>
 

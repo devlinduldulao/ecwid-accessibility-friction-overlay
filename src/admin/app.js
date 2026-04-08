@@ -18,6 +18,7 @@
     saveButton: document.getElementById('save-btn'),
     copyButton: document.getElementById('copy-snippet-btn'),
     previewButton: document.getElementById('preview-toggle-btn'),
+    buildVersionBadge: document.getElementById('build-version-badge'),
     previewStatus: document.getElementById('preview-status'),
     previewLabel: document.getElementById('preview-label'),
     status: document.getElementById('status-message'),
@@ -158,6 +159,7 @@
 
   function initializeDashboard() {
     scenarioMenuOpen = false;
+    renderBuildVersionBadge();
     loadSettings();
     hydrateScenarioOptions();
     hydrateForm();
@@ -814,6 +816,15 @@
     }
 
     return '?v=' + encodeURIComponent(String(appConfig.assetVersion));
+  }
+
+  function renderBuildVersionBadge() {
+    if (!elements.buildVersionBadge) {
+      return;
+    }
+
+    var version = appConfig.assetVersion ? String(appConfig.assetVersion) : 'unknown';
+    elements.buildVersionBadge.textContent = 'Build ' + version;
   }
 
   function listenForUninstall() {
