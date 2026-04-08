@@ -341,6 +341,7 @@
       { label: 'custom-storefront.css', url: baseUrl + '/src/storefront/custom-storefront.css' + assetSuffix },
     ];
 
+    elements.checkSnippetButton.disabled = true;
     elements.snippetHealth.hidden = false;
     elements.snippetHealthSummary.textContent = 'Checking assets…';
     elements.snippetHealthSummary.className = 'afo-health__summary is-pending';
@@ -357,16 +358,25 @@
 
     var results = [];
     var completed = 0;
+    var TIMEOUT_MS = 8000;
 
     assets.forEach(function (asset, index) {
-      fetch(asset.url, { method: 'HEAD', mode: 'cors', cache: 'no-cache' })
+      var controller = new AbortController();
+      var timer = window.setTimeout(function () { controller.abort(); }, TIMEOUT_MS);
+
+      fetch(asset.url, { method: 'GET', mode: 'no-cors', cache: 'no-cache', signal: controller.signal })
         .then(function (response) {
-          results[index] = { ok: response.ok, status: response.status, label: asset.label, url: asset.url };
+          // mode: 'no-cors' returns an opaque response (status 0, type "opaque")
+          // which means the request succeeded at the network level even though
+          // we cannot read headers. A real failure throws instead.
+          var reachable = response.type === 'opaque' || response.ok;
+          results[index] = { ok: reachable, status: response.status, label: asset.label, url: asset.url };
         })
         .catch(function () {
           results[index] = { ok: false, status: 0, label: asset.label, url: asset.url };
         })
         .finally(function () {
+          window.clearTimeout(timer);
           completed += 1;
           if (completed === assets.length) {
             renderSnippetHealthResults(results);
@@ -376,6 +386,7 @@
   }
 
   function renderSnippetHealthResults(results) {
+    elements.checkSnippetButton.disabled = false;
     var allOk = results.every(function (r) { return r.ok; });
     var anyOk = results.some(function (r) { return r.ok; });
 
