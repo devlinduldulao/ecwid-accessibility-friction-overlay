@@ -354,6 +354,74 @@
       color: #FFFFFF;
     }
 
+    .afo-health {
+      margin-top: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--afo-border);
+      background: #FAFAFA;
+      padding: 1rem 1.15rem;
+      display: grid;
+      gap: 10px;
+    }
+
+    .afo-health__summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .afo-health__summary.is-ok {
+      background: rgba(29, 29, 29, 0.08);
+      color: var(--afo-ink);
+    }
+
+    .afo-health__summary.is-fail {
+      background: var(--afo-accent-soft);
+      color: var(--afo-accent-strong);
+    }
+
+    .afo-health__summary.is-pending {
+      background: rgba(29, 29, 29, 0.06);
+      color: var(--afo-muted);
+    }
+
+    .afo-health__row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .afo-health__icon {
+      flex: 0 0 auto;
+      font-size: 0.85rem;
+    }
+
+    .afo-health__label {
+      color: var(--afo-muted);
+    }
+
+    .afo-health__status {
+      margin-left: auto;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .afo-health__status.is-ok {
+      color: var(--afo-ink);
+    }
+
+    .afo-health__status.is-fail {
+      color: var(--afo-accent);
+    }
+
     .afo-hotspot b,
     .afo-recommendation strong {
       color: var(--afo-ink);
@@ -456,6 +524,12 @@
 
         <div class="afo-actions">
           <button id="copy-snippet-btn" class="btn btn-default btn-medium">Copy Snippet</button>
+          <button id="check-snippet-btn" class="btn btn-default btn-medium">Check Snippet Health</button>
+        </div>
+
+        <div id="snippet-health" class="afo-health" hidden>
+          <p id="snippet-health-summary" class="afo-health__summary is-pending">Checking…</p>
+          <div id="snippet-health-details"></div>
         </div>
       </section>
     </section>

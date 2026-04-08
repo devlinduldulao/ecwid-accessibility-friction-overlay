@@ -40,6 +40,10 @@
     maxEventsPerSecond: document.getElementById('max-events-per-second'),
     maxBufferEvents: document.getElementById('max-buffer-events'),
     outcome: document.getElementById('preview-outcome'),
+    checkSnippetButton: document.getElementById('check-snippet-btn'),
+    snippetHealth: document.getElementById('snippet-health'),
+    snippetHealthSummary: document.getElementById('snippet-health-summary'),
+    snippetHealthDetails: document.getElementById('snippet-health-details'),
   };
 
   var appConfig = window.AccessibilityFrictionOverlayEcwidAdminConfig || {};
@@ -58,6 +62,7 @@
     elements.saveButton.addEventListener('click', saveSettings);
     elements.copyButton.addEventListener('click', copySnippet);
     elements.previewButton.addEventListener('click', togglePreview);
+    elements.checkSnippetButton.addEventListener('click', checkSnippetHealth);
     [
       elements.enabled,
       elements.trackCatalog,
@@ -323,6 +328,83 @@
     }
 
     showStatus('Copy failed. Select the snippet text manually and copy it.', 'error');
+  }
+
+  function checkSnippetHealth() {
+    var snapshot = readForm();
+    var baseUrl = snapshot.snippetBaseUrl.replace(/\/$/, '');
+    var assetSuffix = getAssetQuerySuffix();
+
+    var assets = [
+      { label: 'core.js', url: baseUrl + '/src/shared/core.js' + assetSuffix },
+      { label: 'custom-storefront.js', url: baseUrl + '/src/storefront/custom-storefront.js' + assetSuffix },
+      { label: 'custom-storefront.css', url: baseUrl + '/src/storefront/custom-storefront.css' + assetSuffix },
+    ];
+
+    elements.snippetHealth.hidden = false;
+    elements.snippetHealthSummary.textContent = 'Checking assets…';
+    elements.snippetHealthSummary.className = 'afo-health__summary is-pending';
+    elements.snippetHealthDetails.innerHTML = assets.map(function (asset) {
+      return [
+        '<div class="afo-health__row">',
+        '<span class="afo-health__icon">—</span>',
+        '<span class="afo-health__label">' + escapeHtml(asset.label) + '</span>',
+        '<span class="afo-health__status" style="color: var(--afo-muted);">checking</span>',
+        '</div>',
+      ].join('');
+    }).join('');
+    resizeIframe();
+
+    var results = [];
+    var completed = 0;
+
+    assets.forEach(function (asset, index) {
+      fetch(asset.url, { method: 'HEAD', mode: 'cors', cache: 'no-cache' })
+        .then(function (response) {
+          results[index] = { ok: response.ok, status: response.status, label: asset.label, url: asset.url };
+        })
+        .catch(function () {
+          results[index] = { ok: false, status: 0, label: asset.label, url: asset.url };
+        })
+        .finally(function () {
+          completed += 1;
+          if (completed === assets.length) {
+            renderSnippetHealthResults(results);
+          }
+        });
+    });
+  }
+
+  function renderSnippetHealthResults(results) {
+    var allOk = results.every(function (r) { return r.ok; });
+    var anyOk = results.some(function (r) { return r.ok; });
+
+    if (allOk) {
+      elements.snippetHealthSummary.textContent = 'All assets reachable';
+      elements.snippetHealthSummary.className = 'afo-health__summary is-ok';
+    } else if (anyOk) {
+      elements.snippetHealthSummary.textContent = 'Some assets unreachable';
+      elements.snippetHealthSummary.className = 'afo-health__summary is-fail';
+    } else {
+      elements.snippetHealthSummary.textContent = 'No assets reachable — check base URL';
+      elements.snippetHealthSummary.className = 'afo-health__summary is-fail';
+    }
+
+    elements.snippetHealthDetails.innerHTML = results.map(function (r) {
+      var icon = r.ok ? '✓' : '✗';
+      var statusClass = r.ok ? 'afo-health__status is-ok' : 'afo-health__status is-fail';
+      var statusText = r.ok ? 'Reachable' : (r.status ? 'HTTP ' + r.status : 'Unreachable');
+
+      return [
+        '<div class="afo-health__row">',
+        '<span class="afo-health__icon">' + icon + '</span>',
+        '<span class="afo-health__label">' + escapeHtml(r.label) + '</span>',
+        '<span class="' + statusClass + '">' + escapeHtml(statusText) + '</span>',
+        '</div>',
+      ].join('');
+    }).join('');
+
+    resizeIframe();
   }
 
   function handleLiveUpdate() {
