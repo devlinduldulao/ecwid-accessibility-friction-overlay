@@ -4,7 +4,7 @@ This repository now targets static hosting for the main Ecwid deployment path.
 
 ## Goal
 
-Host HTML, JS, and CSS on a static HTTPS host, then paste a generated loader snippet into Ecwid Control Panel → Design → Custom JavaScript.
+Host HTML, JS, and CSS on a static HTTPS host, then install the storefront collector on your Ecwid store using one of two methods.
 
 That gives you:
 
@@ -27,16 +27,51 @@ Any static HTTPS host works, including:
 ## Static Deployment Steps
 
 1. Deploy this repo as static files.
-2. Open your hosted root page.
+2. Open your hosted root page (the merchant control room).
 3. Enter the base URL where the repo is hosted.
 4. Copy the generated snippet.
-5. Paste the snippet into Ecwid Control Panel → Design → Custom JavaScript.
+5. Install the snippet using one of the two options below.
 
 The snippet loads three assets from your static host:
 
 - `src/shared/core.js`
 - `src/storefront/custom-storefront.js`
 - `src/storefront/custom-storefront.css`
+
+## Installing The Storefront Snippet
+
+There are two ways to get the storefront collector running on your Ecwid store.
+
+### Option A — Instant Site Custom Code (quickest)
+
+Use this if you run an Ecwid Instant Site and want to get started immediately.
+
+1. Go to **Ecwid Admin → Website → Design**.
+2. Find the **Custom JavaScript code** section (near the bottom).
+3. Paste the generated snippet exactly as copied. It already includes its own `<script>` tags — do not add extra tags or wrappers.
+4. Save.
+
+The snippet will run on every page of your Instant Site.
+
+### Option B — App `customJsUrl` Endpoint (recommended for published apps)
+
+Use this if you are publishing the app through the Ecwid App Market, or if you prefer Ecwid to manage the script injection automatically.
+
+1. Go to **Ecwid Admin → #develop-apps** (or the app dashboard in your developer account).
+2. Open your app and go to its **Details** tab.
+3. Set `customJsUrl` to your hosted storefront JS file, for example:
+   ```
+   https://your-static-host/src/storefront/custom-storefront.js
+   ```
+4. Optionally set `customCssUrl` to your hosted CSS file:
+   ```
+   https://your-static-host/src/storefront/custom-storefront.css
+   ```
+5. Your app must have the `customize_storefront` scope.
+
+With this approach, Ecwid injects the JS and CSS automatically when the app is installed. You still need a way to deliver the config object — either through `EcwidApp.getAppPublicConfig()` or by including a small config bootstrap in the storefront JS itself.
+
+> **Note:** The old "Control Panel → Design → Custom JavaScript" textarea referenced in older Ecwid guides no longer exists in modern Ecwid. Use one of the two options above.
 
 ## Manual Ecwid Setup
 
@@ -50,11 +85,7 @@ This page is static. It does not need a backend API. It is the primary experienc
 
 ### Storefront injection
 
-Paste the generated snippet into:
-
-Ecwid Control Panel → Design → Custom JavaScript
-
-That snippet handles both the CSS and JS asset loading, so you do not need a separate manual CSS paste step unless you prefer one.
+Use Option A or Option B above. The generated snippet handles both the CSS and JS asset loading, so you do not need a separate manual CSS paste step unless you prefer one.
 
 ## Tradeoffs Of The Static Model
 

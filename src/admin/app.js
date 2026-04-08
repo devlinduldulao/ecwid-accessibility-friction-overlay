@@ -269,6 +269,7 @@
     };
 
     return [
+      '<script>',
       'window.AccessibilityFrictionOverlayEcwidConfig = ' + JSON.stringify(payload, null, 2) + ';',
       '(function () {',
       '  function loadScript(src, onload) {',
@@ -286,7 +287,8 @@
       "  loadScript('" + baseUrl + "/src/shared/core.js" + assetSuffix + "', function () {",
       "    loadScript('" + baseUrl + "/src/storefront/custom-storefront.js" + assetSuffix + "');",
       '  });',
-      '})();'
+      '})();',
+      '</script>'
     ].join('\n');
   }
 

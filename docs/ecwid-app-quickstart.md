@@ -24,8 +24,10 @@ Open the preview URL printed by the static server.
 
 1. Open the merchant control room.
 2. Adjust tracking and overlay settings.
-3. Copy the generated Ecwid Custom JavaScript snippet.
-4. Paste that snippet into the Ecwid storefront customization surface.
+3. Copy the generated storefront loader snippet.
+4. Install it using one of two methods:
+   - **Option A (Instant Site):** Paste the snippet into Ecwid Admin → Website → Design → Custom JavaScript code. The snippet includes its own `<script>` tags — paste it exactly as copied.
+   - **Option B (App endpoint):** Set `customJsUrl` and `customCssUrl` in your app's details at `#develop-apps`. This is the recommended approach for published apps.
 5. Use the storefront collector during merchant QA walkthroughs.
 
 ## Architectural Constraint
