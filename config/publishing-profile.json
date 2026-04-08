@@ -4,7 +4,7 @@
   "shortDescription": "Preview fake accessibility incidents, generate Ecwid storefront snippets, and review friction hotspots without a production database or long-running backend.",
   "category": "Store design / accessibility / merchant tools",
   "hostBaseUrl": "https://devlinduldulao.github.io/ecwid-accessibility-friction-overlay",
-  "clientId": "accessibility-overlay-dev",
+  "clientId": "accessibility-overlay",
   "testStoreId": "132959256",
   "businessName": "devlinduldulao",
   "supportEmail": "devlinduldulao@gmail.com",
