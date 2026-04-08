@@ -2,21 +2,31 @@
 
 Static Ecwid deployment for the Accessibility Friction Overlay project.
 
-This version is intentionally built for low-cost hosting and for a merchant-facing Ecwid dashboard workflow:
+This app tracks accessibility friction on your live Ecwid storefront and surfaces it in a **floating debug overlay** that only the store owner can see. The overlay shows real-time metrics, hotspots, and recommended actions as you browse your own store.
+
+The **admin dashboard** is used to configure tracking settings, generate the deployment snippet, and run preview scenarios with synthetic data. Live event data appears only in the **storefront debug overlay** because there is no backend to sync data across origins.
 
 - No database
 - No Redis
 - No long-running Node.js server in production
-- No OAuth callback or webhook dependency for the main merchant dashboard flow
+- No OAuth callback or webhook dependency
 
-The storefront logic runs in browser-side JavaScript. The admin page is a static control room that lets a business owner tune settings, run preview drills, and generate the Ecwid Custom JavaScript loader snippet to paste into the store.
+## How It Works
+
+1. **Configure** — Open the admin dashboard and adjust tracking settings.
+2. **Deploy** — Copy the generated snippet and paste it into your Ecwid custom code.
+3. **Browse** — Open your storefront with your private debug token URL (`?afo_debug=YOUR_TOKEN`).
+4. **Review** — The floating overlay shows live friction metrics, hotspots, and actionable recommendations as you navigate your store.
+
+> **Note:** The admin dashboard shows synthetic preview data only. Real live metrics are displayed in the storefront overlay because browser localStorage is origin-scoped and cannot be shared without backend infrastructure.
 
 ## What Works
 
-- Browser-side accessibility friction tracking for merchant QA walkthroughs
-- Ephemeral local event buffering in the local merchant browser
-- Optional merchant debug overlay on the storefront, disabled by default
-- Static admin/control-room page for preview scenarios and deployment setup
+- **Storefront debug overlay** — real-time accessibility friction tracking visible only to the store owner via a private debug token URL
+- Live detection of dead clicks, focus visibility issues, keyboard traps, ARIA mismatches, form warnings, and tab loops
+- Metrics, hotspots, and actionable recommendations displayed in the floating overlay panel
+- Admin dashboard for configuring tracking settings and generating the deployment snippet
+- Preview scenarios with synthetic data for demoing the dashboard without live traffic
 - Paste-ready loader snippet that pulls JS and CSS from any static HTTPS host
 
 ## Publishing Assets Status

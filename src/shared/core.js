@@ -468,8 +468,8 @@
         {
           tone: 'note',
           title: 'No live friction yet',
-          body: 'Use the preview scenarios to demonstrate the dashboard or open the storefront and tab through product, cart, and checkout flows.',
-          action: 'Run a preview drill or load the storefront test page.',
+          body: 'Start a preview scenario to see sample data here, or open your live storefront with the debug token URL to capture real accessibility events in the storefront overlay.',
+          action: 'Run a preview drill here or browse your storefront to collect live data.',
         },
       ];
     }

@@ -733,8 +733,8 @@
 
     if (elements.previewLabel) {
       elements.previewLabel.textContent = previewEnabled
-        ? 'Synthetic accessibility events are running so you can demo the control room without live storefront traffic.'
-        : 'Turn on preview to simulate merchant demo data without relying on live storefront traffic.';
+        ? 'Synthetic events are active. This is demo data only — real live metrics appear in the storefront debug overlay.'
+        : 'This section uses synthetic data to demonstrate how the dashboard looks with active events. To see real live data, open your storefront with the debug token URL above.';
     }
 
     if (elements.previewButton) {
@@ -759,7 +759,7 @@
 
   function renderFeed(events) {
     if (!events.length) {
-      elements.feed.innerHTML = '<p class="afo-empty">Preview is idle. Start the scenario to simulate a live control-room walkthrough.</p>';
+      elements.feed.innerHTML = '<p class="afo-empty">Preview is idle. Start a scenario above to see sample data, or open your storefront with the debug token URL to see real live events.</p>';
       return;
     }
 
@@ -779,7 +779,7 @@
 
   function renderHotspots(hotspots) {
     if (!hotspots.length) {
-      elements.hotspots.innerHTML = '<p class="afo-empty">Hotspots appear as soon as a preview drill starts.</p>';
+      elements.hotspots.innerHTML = '<p class="afo-empty">Hotspots appear when a preview is running. Live hotspots are shown in the storefront debug overlay.</p>';
       return;
     }
 

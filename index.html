@@ -486,13 +486,14 @@
       <div>
         <p class="afo-eyebrow">Merchant Accessibility Desk</p>
         <h1>Accessibility<br/>Friction Overlay</h1>
-        <p>This version is designed as a merchant-facing control room. No database, no Redis, and no long-running Node server are required in production. The admin page is the main product surface for business owners, while the storefront script is a lightweight collector used for merchant-run QA walkthroughs and preview drills.</p>
+        <p>This app tracks accessibility friction on your live storefront and surfaces it in a <strong>floating debug overlay</strong> that only you can see. Use this admin page to configure tracking, generate the deployment snippet, and preview demo scenarios. Live metrics appear in the storefront overlay — not here — because there is no backend to sync data across origins.</p>
       </div>
       <div>
-        <p class="afo-section-label">Deployment Model</p>
-        <p><strong>Store:</strong> <span id="afo-store-id">demo-store</span></p>
-        <p><strong>Runtime:</strong> Static HTML, JS, and CSS on any HTTPS host.</p>
-        <p><strong>Tradeoff:</strong> No cross-device live dashboard stream without a backend.</p>
+        <p class="afo-section-label">How It Works</p>
+        <p><strong>1.</strong> Configure tracking and deploy the snippet below.</p>
+        <p><strong>2.</strong> Open your storefront with your private debug token URL.</p>
+        <p><strong>3.</strong> Browse your store — the overlay shows live friction metrics, hotspots, and recommendations in real time.</p>
+        <p class="afo-helper" style="margin-top:0.5rem;"><strong>Store:</strong> <span id="afo-store-id">demo-store</span> · <strong>Runtime:</strong> Static HTML, JS, CSS — no server required.</p>
       </div>
     </section>
 
@@ -501,7 +502,7 @@
         <div>
           <p class="afo-section-label">Settings</p>
           <h2>Storefront Tracking Controls</h2>
-          <p class="afo-helper">These settings are saved only in this browser so a business owner can generate a deployment snippet and run preview drills without a server-side settings API.</p>
+          <p class="afo-helper">These settings control what the storefront overlay tracks and how events are buffered. Changes are saved in this browser and embedded into the deployment snippet below.</p>
         </div>
 
         <div class="afo-settings-grid">
@@ -590,7 +591,7 @@
           <p class="afo-section-label">Preview</p>
           <h2>Control Room Walkthrough</h2>
           <p id="preview-status" class="afo-preview-status">Preview Off</p>
-          <p id="preview-label" class="afo-helper">Turn on preview to simulate merchant demo data without relying on live storefront traffic.</p>
+          <p id="preview-label" class="afo-helper">This section uses synthetic data to demonstrate how the dashboard looks with active events. To see real live data, open your storefront with the debug token URL above.</p>
           <p id="preview-outcome" class="afo-helper">Best for merchant demos, revenue reviews, and final-step checkout QA.</p>
         </div>
         <div class="afo-actions">
