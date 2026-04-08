@@ -32,10 +32,12 @@ test('build script creates the expected static package layout', () => {
   assert.match(rootIndex, /href="assets\/marketplace\/app-icon\.svg"/);
   assert.match(rootIndex, /src="src\/shared\/core\.js"/);
   assert.match(rootIndex, /id="deployment-snippet-preview"/);
+  assert.match(rootIndex, /id="check-snippet-btn"/);
+  assert.match(rootIndex, /id="snippet-health"/);
   assert.match(rootIndex, /id="preview-scenario-menu"/);
   assert.match(rootIndex, /id="preview-scenario-toggle"/);
   assert.match(rootIndex, /id="preview-scenario-options"/);
-  assert.match(rootIndex, /src="src\/admin\/app\.js\?v=2026-04-07-1"/);
+  assert.match(rootIndex, /src="src\/admin\/app\.js\?v=2026-04-08-2"/);
   assert.doesNotMatch(rootIndex, /http-equiv="refresh"/);
 
   const adminApp = fs.readFileSync(path.join(projectRoot, 'src', 'admin', 'app.js'), 'utf8');

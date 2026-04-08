@@ -54,6 +54,7 @@
   var previewTimer = null;
   var currentSnippet = '';
   var scenarioMenuOpen = false;
+  var healthCheckRunId = 0;
 
   bindEvents();
   initContext();
@@ -331,6 +332,8 @@
   }
 
   function checkSnippetHealth() {
+    var runId = healthCheckRunId + 1;
+    healthCheckRunId = runId;
     var snapshot = readForm();
     var baseUrl = snapshot.snippetBaseUrl.replace(/\/$/, '');
     var assetSuffix = getAssetQuerySuffix();
@@ -359,26 +362,40 @@
     var results = [];
     var completed = 0;
     var TIMEOUT_MS = 8000;
+    var finished = false;
+
+    function finishCheck() {
+      if (finished || runId !== healthCheckRunId) {
+        return;
+      }
+
+      finished = true;
+
+      for (var i = 0; i < assets.length; i += 1) {
+        if (!results[i]) {
+          results[i] = { ok: false, status: 0, label: assets[i].label, url: assets[i].url };
+        }
+      }
+
+      renderSnippetHealthResults(results);
+    }
 
     // Hard failsafe: if nothing resolves within TIMEOUT + 2s, force-finish.
     var failsafe = window.setTimeout(function () {
-      if (completed < assets.length) {
-        for (var i = 0; i < assets.length; i++) {
-          if (!results[i]) {
-            results[i] = { ok: false, status: 0, label: assets[i].label, url: assets[i].url };
-          }
-        }
-        renderSnippetHealthResults(results);
-      }
+      finishCheck();
     }, TIMEOUT_MS + 2000);
 
     assets.forEach(function (asset, index) {
       probeAsset(asset.url, TIMEOUT_MS, function (ok, status) {
+        if (runId !== healthCheckRunId || finished) {
+          return;
+        }
+
         results[index] = { ok: ok, status: status, label: asset.label, url: asset.url };
         completed += 1;
         if (completed === assets.length) {
           window.clearTimeout(failsafe);
-          renderSnippetHealthResults(results);
+          finishCheck();
         }
       });
     });
