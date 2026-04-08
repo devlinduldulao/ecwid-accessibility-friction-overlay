@@ -360,29 +360,52 @@
     var completed = 0;
     var TIMEOUT_MS = 8000;
 
-    assets.forEach(function (asset, index) {
-      var controller = new AbortController();
-      var timer = window.setTimeout(function () { controller.abort(); }, TIMEOUT_MS);
-
-      fetch(asset.url, { method: 'GET', mode: 'no-cors', cache: 'no-cache', signal: controller.signal })
-        .then(function (response) {
-          // mode: 'no-cors' returns an opaque response (status 0, type "opaque")
-          // which means the request succeeded at the network level even though
-          // we cannot read headers. A real failure throws instead.
-          var reachable = response.type === 'opaque' || response.ok;
-          results[index] = { ok: reachable, status: response.status, label: asset.label, url: asset.url };
-        })
-        .catch(function () {
-          results[index] = { ok: false, status: 0, label: asset.label, url: asset.url };
-        })
-        .finally(function () {
-          window.clearTimeout(timer);
-          completed += 1;
-          if (completed === assets.length) {
-            renderSnippetHealthResults(results);
+    // Hard failsafe: if nothing resolves within TIMEOUT + 2s, force-finish.
+    var failsafe = window.setTimeout(function () {
+      if (completed < assets.length) {
+        for (var i = 0; i < assets.length; i++) {
+          if (!results[i]) {
+            results[i] = { ok: false, status: 0, label: assets[i].label, url: assets[i].url };
           }
-        });
+        }
+        renderSnippetHealthResults(results);
+      }
+    }, TIMEOUT_MS + 2000);
+
+    assets.forEach(function (asset, index) {
+      probeAsset(asset.url, TIMEOUT_MS, function (ok, status) {
+        results[index] = { ok: ok, status: status, label: asset.label, url: asset.url };
+        completed += 1;
+        if (completed === assets.length) {
+          window.clearTimeout(failsafe);
+          renderSnippetHealthResults(results);
+        }
+      });
     });
+  }
+
+  function probeAsset(url, timeout, callback) {
+    var done = false;
+
+    function finish(ok, status) {
+      if (done) { return; }
+      done = true;
+      callback(ok, status);
+    }
+
+    // Use XMLHttpRequest — it works reliably inside iframes, supports a
+    // native timeout, and avoids the fetch/CORS/opaque-response issues.
+    try {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+      xhr.timeout = timeout;
+      xhr.onload = function () { finish(xhr.status >= 200 && xhr.status < 400, xhr.status); };
+      xhr.onerror = function () { finish(false, 0); };
+      xhr.ontimeout = function () { finish(false, 0); };
+      xhr.send();
+    } catch {
+      finish(false, 0);
+    }
   }
 
   function renderSnippetHealthResults(results) {
