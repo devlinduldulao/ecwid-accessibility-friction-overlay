@@ -108,6 +108,18 @@
       }
     }
 
+    // Detect Ecwid context even when the SDK script fails to load (CDN
+    // blocked, ad-blocker, etc.).  Being inside an iframe whose referrer
+    // belongs to *.ecwid.com is a reliable signal.
+    if (!hasEcwidContext) {
+      var ref = String(document.referrer || '');
+      if (/\.ecwid\.com\b/i.test(ref)) {
+        hasEcwidContext = true;
+      } else {
+        try { if (window.self !== window.top) { hasEcwidContext = true; } } catch { hasEcwidContext = true; }
+      }
+    }
+
     storeId = resolveStoreId(payload);
 
     initializeDashboard();
@@ -118,10 +130,21 @@
       return String(payload.store_id);
     }
 
-    var pathMatch = String(window.location.pathname || '').match(/\/store\/(\d+)(?:\/|$)/);
+    var storePattern = /\/store\/(\d+)(?:\/|$)/;
+
+    var pathMatch = String(window.location.pathname || '').match(storePattern);
     if (pathMatch && pathMatch[1]) {
       hasEcwidContext = true;
       return pathMatch[1];
+    }
+
+    // The Ecwid CP loads this page in a cross-origin iframe.  The iframe's
+    // own URL never contains /store/<id>, but document.referrer usually
+    // carries the parent admin URL (e.g. https://my.ecwid.com/store/123456).
+    var referrerMatch = String(document.referrer || '').match(storePattern);
+    if (referrerMatch && referrerMatch[1]) {
+      hasEcwidContext = true;
+      return referrerMatch[1];
     }
 
     return '';
