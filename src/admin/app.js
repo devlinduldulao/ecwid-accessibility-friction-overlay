@@ -44,6 +44,7 @@
 
   var appConfig = window.AccessibilityFrictionOverlayEcwidAdminConfig || {};
   var storeId = '';
+  var hasEcwidContext = false;
   var settings = core.getDefaultSettings();
   var previewEnabled = false;
   var previewTimer = null;
@@ -88,13 +89,10 @@
   }
 
   function initContext() {
-    // Fallback for standalone local preview outside of Ecwid Control Panel
-    if (window.self === window.top) {
-      initializeDashboard();
-      return;
-    }
+    var payload = null;
 
     if (window.EcwidApp && typeof window.EcwidApp.init === 'function') {
+      hasEcwidContext = true;
       window.EcwidApp.init({
         app_id: appConfig.appId || 'accessibility-friction-overlay',
         autoloadedflag: true,
@@ -107,13 +105,26 @@
       // object directly (parsed from the URL hash set by the Ecwid CP iframe).
       if (typeof window.EcwidApp.getPayload === 'function') {
         var payload = window.EcwidApp.getPayload();
-        if (payload && payload.store_id) {
-          storeId = String(payload.store_id);
-        }
       }
     }
 
+    storeId = resolveStoreId(payload);
+
     initializeDashboard();
+  }
+
+  function resolveStoreId(payload) {
+    if (payload && payload.store_id) {
+      return String(payload.store_id);
+    }
+
+    var pathMatch = String(window.location.pathname || '').match(/\/store\/(\d+)(?:\/|$)/);
+    if (pathMatch && pathMatch[1]) {
+      hasEcwidContext = true;
+      return pathMatch[1];
+    }
+
+    return '';
   }
 
   function initializeDashboard() {
@@ -139,7 +150,7 @@
       settings.snippetBaseUrl = getSuggestedBaseUrl();
     }
 
-    elements.storeLabel.textContent = storeId || 'Preview mode';
+    elements.storeLabel.textContent = storeId || (hasEcwidContext ? 'Store context unavailable' : 'Preview mode');
   }
 
   function hydrateScenarioOptions() {
