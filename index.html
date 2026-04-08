@@ -329,8 +329,7 @@
 
     .afo-feed-item__meta,
     .afo-recommendation__tone,
-    .afo-preview-status,
-    .afo-build-badge {
+    .afo-preview-status {
       display: inline-flex;
       margin-top: 0.55rem;
       padding: 0.25rem 0.5rem;
@@ -344,7 +343,49 @@
     }
 
     .afo-build-badge {
+      display: inline-flex;
       margin-top: 0.35rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(29, 29, 29, 0.06);
+      color: var(--afo-muted);
+    }
+
+    .afo-build-badge.is-loaded {
+      background: rgba(29, 29, 29, 0.08);
+      color: var(--afo-ink);
+    }
+
+    .afo-build-badge.is-unknown {
+      background: rgba(232, 28, 36, 0.1);
+      color: var(--afo-accent);
+    }
+
+    .afo-verify-tip {
+      margin-top: 0.75rem;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--afo-border);
+      background: #FAFAFA;
+      font-size: 0.85rem;
+      color: var(--afo-muted);
+      line-height: 1.6;
+    }
+
+    .afo-verify-tip strong {
+      color: var(--afo-ink);
+    }
+
+    .afo-verify-tip code {
+      padding: 0.15rem 0.35rem;
+      border-radius: 3px;
+      background: rgba(29, 29, 29, 0.06);
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.82rem;
     }
 
     .afo-preview-status.is-active {
@@ -511,7 +552,7 @@
 
         <div class="afo-actions">
           <button id="save-btn" class="btn btn-default btn-medium">Save Local Settings</button>
-          <div id="status-message"></div>
+          <div id="status-message" role="status" aria-live="polite"></div>
         </div>
       </section>
 
@@ -528,12 +569,17 @@
 
         <div class="afo-actions">
           <button id="copy-snippet-btn" class="btn btn-default btn-medium">Copy Snippet</button>
-          <button id="check-snippet-btn" class="btn btn-default btn-medium">Check Snippet Health</button>
+          <button id="check-snippet-btn" class="btn btn-default btn-medium">Verify Hosted Assets</button>
         </div>
 
-        <div id="snippet-health" class="afo-health" hidden>
+        <div id="snippet-health" class="afo-health" role="status" aria-live="polite" hidden>
           <p id="snippet-health-summary" class="afo-health__summary is-pending">Not checked yet</p>
           <div id="snippet-health-details"></div>
+        </div>
+
+        <div class="afo-verify-tip">
+          <strong>How to confirm the snippet is active on your storefront:</strong><br>
+          Open your live store and append <code>?afo_debug=1</code> to the URL. If the collector is running, you will see the merchant debug overlay in the bottom-right corner. You can also enable the debug overlay in Settings above and run a walkthrough.
         </div>
       </section>
     </section>
@@ -588,9 +634,9 @@
     window.AccessibilityFrictionOverlayEcwidAdminConfig = {
       appId: 'accessibility-overlay',
       snippetBaseUrl: 'https://devlinduldulao.github.io/ecwid-accessibility-friction-overlay',
-      assetVersion: '2026-04-08-3'
+      assetVersion: '2026-04-08-4'
     };
   </script>
-  <script src="src/admin/app.js?v=2026-04-08-3"></script>
+  <script src="src/admin/app.js?v=2026-04-08-4"></script>
 </body>
 </html>

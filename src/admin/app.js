@@ -240,7 +240,8 @@
     persistSettings();
     updateSnippet();
     updatePreview();
-    showStatus('Saved locally in this browser. The storefront uses the generated snippet, not a backend.', 'success');
+    showStatus('Settings saved in this browser.', 'success');
+    flashButtonLabel(elements.saveButton, 'Saved!', 2000);
   }
 
   function persistSettings() {
@@ -308,12 +309,17 @@
       return;
     }
 
+    function onCopySuccess() {
+      showStatus('Snippet copied to clipboard.', 'success');
+      flashButtonLabel(elements.copyButton, 'Copied!', 2000);
+    }
+
     // Try execCommand synchronously first — must happen within the user-gesture
     // tick. navigator.clipboard.writeText() is not reliable inside Ecwid's
     // iframe because Ecwid does not grant clipboard-write permission to embedded
     // apps, so any async fallback loses the user-gesture context.
     if (tryCopyExecCommand(value)) {
-      showStatus('Snippet copied. Paste it into Design > Custom JavaScript.', 'success');
+      onCopySuccess();
       return;
     }
 
@@ -322,7 +328,7 @@
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(value)
         .then(function () {
-          showStatus('Snippet copied. Paste it into Design > Custom JavaScript.', 'success');
+          onCopySuccess();
         })
         .catch(function () {
           showStatus('Copy failed. Select the snippet text manually and copy it.', 'error');
@@ -801,6 +807,17 @@
     resizeIframe();
   }
 
+  function flashButtonLabel(button, label, duration) {
+    if (!button) { return; }
+    var original = button.textContent;
+    button.textContent = label;
+    button.disabled = true;
+    window.setTimeout(function () {
+      button.textContent = original;
+      button.disabled = false;
+    }, duration || 2000);
+  }
+
   function getSuggestedBaseUrl() {
     if (appConfig.snippetBaseUrl) {
       return appConfig.snippetBaseUrl;
@@ -823,8 +840,15 @@
       return;
     }
 
-    var version = appConfig.assetVersion ? String(appConfig.assetVersion) : 'unknown';
-    elements.buildVersionBadge.textContent = 'Build ' + version;
+    var version = appConfig.assetVersion ? String(appConfig.assetVersion) : '';
+
+    if (version) {
+      elements.buildVersionBadge.textContent = 'Build ' + version;
+      elements.buildVersionBadge.className = 'afo-build-badge is-loaded';
+    } else {
+      elements.buildVersionBadge.textContent = 'Build version unavailable';
+      elements.buildVersionBadge.className = 'afo-build-badge is-unknown';
+    }
   }
 
   function listenForUninstall() {
