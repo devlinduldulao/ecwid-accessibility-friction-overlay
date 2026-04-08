@@ -364,6 +364,10 @@
       gap: 10px;
     }
 
+    .afo-health[hidden] {
+      display: none !important;
+    }
+
     .afo-health__summary {
       display: inline-flex;
       align-items: center;
@@ -528,7 +532,7 @@
         </div>
 
         <div id="snippet-health" class="afo-health" hidden>
-          <p id="snippet-health-summary" class="afo-health__summary is-pending">Checking…</p>
+          <p id="snippet-health-summary" class="afo-health__summary is-pending">Not checked yet</p>
           <div id="snippet-health-details"></div>
         </div>
       </section>
@@ -584,9 +588,9 @@
     window.AccessibilityFrictionOverlayEcwidAdminConfig = {
       appId: 'accessibility-overlay',
       snippetBaseUrl: 'https://devlinduldulao.github.io/ecwid-accessibility-friction-overlay',
-      assetVersion: '2026-04-08-2'
+      assetVersion: '2026-04-08-3'
     };
   </script>
-  <script src="../src/admin/app.js?v=2026-04-08-2"></script>
+  <script src="../src/admin/app.js?v=2026-04-08-3"></script>
 </body>
 </html>
