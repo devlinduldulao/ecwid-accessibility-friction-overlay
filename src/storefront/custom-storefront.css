@@ -77,6 +77,38 @@
   color: #1D1D1D;
 }
 
+.afo-ecwid-overlay__live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 6px;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: #D4EDDA;
+  color: #155724;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid #C3E6CB;
+  vertical-align: middle;
+}
+
+.afo-ecwid-overlay__info-bar {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  background: #D4EDDA;
+  border: 1px solid #C3E6CB;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #155724;
+}
+
+.afo-ecwid-overlay__info-bar strong {
+  color: #155724;
+}
+
 .afo-ecwid-overlay__clear {
   border: 1px solid rgba(29, 29, 29, 0.2);
   border-radius: 4px;

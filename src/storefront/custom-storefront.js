@@ -443,14 +443,17 @@
       '<div class="afo-ecwid-overlay__header">',
       '<div>',
       '<p class="afo-ecwid-overlay__eyebrow">Merchant Debug Panel</p>',
-      '<h2>Current QA Session</h2>',
+      '<h2>Current QA Session <span class="afo-ecwid-overlay__live-badge">Live Data</span></h2>',
       '</div>',
       '<button type="button" class="afo-ecwid-overlay__clear">Clear</button>',
+      '</div>',
+      '<div class="afo-ecwid-overlay__info-bar">',
+      '<strong>You are viewing real data</strong> from your storefront. Events are captured as you browse and interact with your store.',
       '</div>',
       '<div class="afo-ecwid-overlay__metrics"></div>',
       '<div class="afo-ecwid-overlay__recommendations"></div>',
       '<div class="afo-ecwid-overlay__feed"></div>',
-      '<p class="afo-ecwid-overlay__hint">Press Alt+Shift+F to open or close this panel.</p>',
+      '<p class="afo-ecwid-overlay__hint">Press Alt+Shift+F to open or close this panel. Data is stored in this browser only.</p>',
       '</div>',
     ].join('');
 
@@ -517,7 +520,7 @@
     }).join('');
 
     if (!events.length) {
-      feedRoot.innerHTML = '<p class="afo-ecwid-overlay__empty">No merchant QA events in this browser session yet.</p>';
+      feedRoot.innerHTML = '<p class="afo-ecwid-overlay__empty">No events yet — start browsing your store. Tab through pages, click elements, and test forms. Events will appear here in real time as you interact.</p>';
       return;
     }
 

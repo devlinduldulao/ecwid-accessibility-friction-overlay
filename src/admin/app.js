@@ -21,6 +21,7 @@
     buildVersionBadge: document.getElementById('build-version-badge'),
     previewStatus: document.getElementById('preview-status'),
     previewLabel: document.getElementById('preview-label'),
+    previewDemoBadge: document.getElementById('preview-demo-badge'),
     status: document.getElementById('status-message'),
     metrics: document.getElementById('accessibility-friction-overlay-metrics'),
     feed: document.getElementById('accessibility-friction-overlay-feed'),
@@ -46,6 +47,9 @@
     snippetHealthSummary: document.getElementById('snippet-health-summary'),
     snippetHealthDetails: document.getElementById('snippet-health-details'),
     verifyTip: document.querySelector('.afo-verify-tip'),
+    guide: document.getElementById('getting-started-guide'),
+    guideDismiss: document.getElementById('guide-dismiss-btn'),
+    guideReopen: document.getElementById('guide-reopen-btn'),
   };
 
   var appConfig = window.AccessibilityFrictionOverlayEcwidAdminConfig || {};
@@ -66,6 +70,12 @@
     elements.copyButton.addEventListener('click', copySnippet);
     elements.previewButton.addEventListener('click', togglePreview);
     elements.checkSnippetButton.addEventListener('click', checkSnippetHealth);
+    if (elements.guideDismiss) {
+      elements.guideDismiss.addEventListener('click', dismissGuide);
+    }
+    if (elements.guideReopen) {
+      elements.guideReopen.addEventListener('click', reopenGuide);
+    }
     [
       elements.enabled,
       elements.trackCatalog,
@@ -167,6 +177,38 @@
     renderScenarioMenuState();
     updateSnippet();
     updatePreview();
+    initGuideState();
+    resizeIframe();
+  }
+
+  function initGuideState() {
+    var guideKey = 'afo_guide_dismissed';
+    try {
+      var dismissed = window.localStorage.getItem(guideKey) === '1';
+      if (dismissed) {
+        if (elements.guide) { elements.guide.hidden = true; }
+        if (elements.guideReopen) { elements.guideReopen.hidden = false; }
+      } else {
+        if (elements.guide) { elements.guide.hidden = false; }
+        if (elements.guideReopen) { elements.guideReopen.hidden = true; }
+      }
+    } catch {
+      // Ignore localStorage errors
+    }
+    resizeIframe();
+  }
+
+  function dismissGuide() {
+    if (elements.guide) { elements.guide.hidden = true; }
+    if (elements.guideReopen) { elements.guideReopen.hidden = false; }
+    try { window.localStorage.setItem('afo_guide_dismissed', '1'); } catch { /* ignore */ }
+    resizeIframe();
+  }
+
+  function reopenGuide() {
+    if (elements.guide) { elements.guide.hidden = false; }
+    if (elements.guideReopen) { elements.guideReopen.hidden = true; }
+    try { window.localStorage.removeItem('afo_guide_dismissed'); } catch { /* ignore */ }
     resizeIframe();
   }
 
@@ -727,20 +769,24 @@
 
   function renderPreviewControls(scenario) {
     if (elements.previewStatus) {
-      elements.previewStatus.textContent = previewEnabled ? 'Preview On' : 'Preview Off';
+      elements.previewStatus.textContent = previewEnabled ? 'Preview On — Demo Data Active' : 'Preview Off';
       elements.previewStatus.classList.toggle('is-active', previewEnabled);
     }
 
     if (elements.previewLabel) {
-      elements.previewLabel.textContent = previewEnabled
-        ? 'Synthetic events are active. This is demo data only — real live metrics appear in the storefront debug overlay.'
-        : 'This section uses synthetic data to demonstrate how the dashboard looks with active events. To see real live data, open your storefront with the debug token URL above.';
+      elements.previewLabel.innerHTML = previewEnabled
+        ? '<strong>⚠ Demo data is active.</strong> Everything below is synthetic — not from your real store. To see real live metrics, open your storefront with the debug token URL from the Deploy section above.'
+        : '<strong>This section uses synthetic demo data</strong> to show you what the dashboard layout looks like with active events. To see your real live accessibility data, open your storefront with the debug token URL from the Deploy section above.';
+    }
+
+    if (elements.previewDemoBadge) {
+      elements.previewDemoBadge.style.display = previewEnabled ? 'inline-flex' : 'inline-flex';
     }
 
     if (elements.previewButton) {
       elements.previewButton.title = previewEnabled
-        ? 'Stop the fake-data walkthrough for this scenario.'
-        : 'Start a fake-data walkthrough for this scenario.';
+        ? 'Stop the demo walkthrough for this scenario.'
+        : 'Start a demo walkthrough to preview the layout.';
     }
 
     if (elements.outcome && scenario && !previewEnabled) {
@@ -750,7 +796,7 @@
 
   function renderMetrics(summary) {
     elements.metrics.innerHTML = [
-      metricCard('Active Warnings', summary.total, 'Total buffered issues in the current preview drill.'),
+      metricCard('Active Warnings', summary.total, 'Total buffered issues in the current demo drill.'),
       metricCard('Keyboard Trap Risk', summary.countsByType.keyboard_trap_risk || 0, 'Dialog and drawer moments that can block non-mouse shoppers.'),
       metricCard('False Interactivity', summary.countsByType.false_interactivity || 0, 'Click targets that look interactive without behaving like it.'),
       metricCard('Focus Visibility', summary.countsByType.focus_visibility_issue || 0, 'Places where keyboard progress becomes hard to follow.'),
@@ -759,7 +805,7 @@
 
   function renderFeed(events) {
     if (!events.length) {
-      elements.feed.innerHTML = '<p class="afo-empty">Preview is idle. Start a scenario above to see sample data, or open your storefront with the debug token URL to see real live events.</p>';
+      elements.feed.innerHTML = '<p class="afo-empty">No demo data active. Start a scenario above to preview the layout. <strong>Real live events appear in your storefront debug overlay</strong> — not here.</p>';
       return;
     }
 
@@ -770,7 +816,7 @@
       return [
         '<article class="afo-feed-item">',
         '<header><strong>' + escapeHtml(core.humanize(event.type)) + '</strong><span>' + escapeHtml(formatTime(event.occurredAt)) + '</span></header>',
-        '<span class="afo-feed-item__meta">Preview</span>',
+        '<span class="afo-feed-item__meta" style="background:#FFF3CD;color:#856404;">Demo Event</span>',
         '<p>' + escapeHtml(core.humanize(event.page) + ' / ' + core.humanize(event.surface) + ' / ' + core.humanize(issue)) + '</p>',
         '</article>',
       ].join('');
@@ -779,7 +825,7 @@
 
   function renderHotspots(hotspots) {
     if (!hotspots.length) {
-      elements.hotspots.innerHTML = '<p class="afo-empty">Hotspots appear when a preview is running. Live hotspots are shown in the storefront debug overlay.</p>';
+      elements.hotspots.innerHTML = '<p class="afo-empty">Hotspots appear when a demo scenario is running. <strong>Real hotspots are in your storefront overlay.</strong></p>';
       return;
     }
 

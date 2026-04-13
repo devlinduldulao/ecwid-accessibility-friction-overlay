@@ -477,11 +477,251 @@
       color: var(--afo-ink);
     }
 
+    /* ── Getting Started Guide ── */
+    .afo-guide {
+      position: relative;
+      border-radius: 12px;
+      border: 2px solid var(--afo-accent);
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--afo-accent-soft) 100%);
+      box-shadow: 0 4px 16px rgba(232, 28, 36, 0.08);
+      padding: 1.5rem 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .afo-guide[hidden] {
+      display: none !important;
+    }
+
+    .afo-guide__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 1rem;
+    }
+
+    .afo-guide__header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      color: var(--afo-ink);
+    }
+
+    .afo-guide__header p {
+      margin: 0.25rem 0 0;
+      color: var(--afo-muted);
+    }
+
+    .afo-guide__dismiss {
+      flex: 0 0 auto;
+      border: 1px solid var(--afo-border);
+      border-radius: 6px;
+      background: #FFFFFF;
+      padding: 0.4rem 0.75rem;
+      font: inherit;
+      font-size: 0.82rem;
+      color: var(--afo-muted);
+      cursor: pointer;
+    }
+
+    .afo-guide__dismiss:hover {
+      border-color: var(--afo-accent);
+      color: var(--afo-accent);
+    }
+
+    .afo-guide__steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .afo-guide__step {
+      border-radius: 10px;
+      border: 1px solid var(--afo-border);
+      background: #FFFFFF;
+      padding: 1.15rem;
+    }
+
+    .afo-guide__step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--afo-accent);
+      color: #FFFFFF;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .afo-guide__step h3 {
+      margin: 0 0 0.35rem;
+      font-size: 0.95rem;
+      color: var(--afo-ink);
+    }
+
+    .afo-guide__step p {
+      margin: 0;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--afo-muted);
+    }
+
+    .afo-guide__step code {
+      padding: 0.12rem 0.3rem;
+      border-radius: 3px;
+      background: rgba(29, 29, 29, 0.06);
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.78rem;
+    }
+
+    .afo-guide__footer {
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(232, 28, 36, 0.12);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .afo-guide__footer svg {
+      flex: 0 0 auto;
+    }
+
+    .afo-guide__footer p {
+      margin: 0;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--afo-muted);
+    }
+
+    .afo-guide__reopen {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--afo-border);
+      border-radius: 6px;
+      background: #FFFFFF;
+      padding: 0.4rem 0.75rem;
+      font: inherit;
+      font-size: 0.82rem;
+      color: var(--afo-accent);
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+
+    .afo-guide__reopen:hover {
+      border-color: var(--afo-accent);
+      background: var(--afo-accent-soft);
+    }
+
+    .afo-guide__reopen[hidden] {
+      display: none !important;
+    }
+
+    /* ── Architecture Info Banner ── */
+    .afo-architecture-info {
+      border-radius: 10px;
+      border: 1px solid rgba(29, 29, 29, 0.1);
+      background: linear-gradient(135deg, #F9F9F9 0%, #F0F0F0 100%);
+      padding: 1.15rem 1.35rem;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .afo-architecture-info svg {
+      flex: 0 0 auto;
+      margin-top: 2px;
+    }
+
+    .afo-architecture-info__content h3 {
+      margin: 0 0 0.25rem;
+      font-size: 0.95rem;
+      color: var(--afo-ink);
+    }
+
+    .afo-architecture-info__content p {
+      margin: 0;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--afo-muted);
+    }
+
+    .afo-architecture-info__columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 0.6rem;
+    }
+
+    .afo-architecture-info__col {
+      padding: 0.7rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid var(--afo-border);
+      background: #FFFFFF;
+    }
+
+    .afo-architecture-info__col strong {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--afo-ink);
+      margin-bottom: 0.15rem;
+    }
+
+    .afo-architecture-info__col span {
+      font-size: 0.78rem;
+      color: var(--afo-muted);
+    }
+
+    /* ── Demo Data Badge ── */
+    .afo-demo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.3rem 0.65rem;
+      border-radius: 5px;
+      background: #FFF3CD;
+      color: #856404;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid #FFE69C;
+    }
+
+    .afo-demo-badge svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .afo-live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.3rem 0.65rem;
+      border-radius: 5px;
+      background: #D4EDDA;
+      color: #155724;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid #C3E6CB;
+    }
+
     @media (max-width: 980px) {
       .afo-masthead,
       .afo-stack,
       .afo-results-grid,
       .afo-settings-grid {
+        grid-template-columns: 1fr;
+      }
+      .afo-guide__steps {
+        grid-template-columns: 1fr;
+      }
+      .afo-architecture-info__columns {
         grid-template-columns: 1fr;
       }
     }
@@ -493,16 +733,74 @@
       <div>
         <p class="afo-eyebrow">Merchant Accessibility Desk</p>
         <h1>Accessibility<br/>Friction Overlay</h1>
-        <p>This app tracks accessibility friction on your live storefront and surfaces it in a <strong>floating debug overlay</strong> that only you can see. Use this admin page to configure tracking, generate the deployment snippet, and preview demo scenarios. Live metrics appear in the storefront overlay — not here — because there is no backend to sync data across origins.</p>
+        <p>Configure tracking settings, generate the deployment snippet for your storefront, and preview demo scenarios below.</p>
       </div>
       <div>
-        <p class="afo-section-label">How It Works</p>
-        <p><strong>1.</strong> Configure tracking and deploy the snippet below.</p>
-        <p><strong>2.</strong> Open your storefront with your private debug token URL.</p>
-        <p><strong>3.</strong> Browse your store — the overlay shows live friction metrics, hotspots, and recommendations in real time.</p>
+        <p class="afo-section-label">Quick Summary</p>
+        <p><strong>This dashboard</strong> is your configuration hub — set up tracking and get the code snippet.</p>
+        <p><strong>Your storefront overlay</strong> is where real metrics appear — visible only to you, in real time.</p>
         <p class="afo-helper" style="margin-top:0.5rem;"><strong>Store:</strong> <span id="afo-store-id">demo-store</span> · <strong>Runtime:</strong> Static HTML, JS, CSS — no server required.</p>
       </div>
     </section>
+
+    <!-- Getting Started Guide -->
+    <button id="guide-reopen-btn" class="afo-guide__reopen" hidden>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M7 5h2v1H7V5zm0 2.5h2v4H7v-4z" fill="currentColor"/></svg>
+      Show Getting Started Guide
+    </button>
+    <section id="getting-started-guide" class="afo-guide">
+      <div class="afo-guide__header">
+        <div>
+          <h2>Getting Started — How This App Works</h2>
+          <p>Three steps to start seeing real accessibility friction on your storefront.</p>
+        </div>
+        <button id="guide-dismiss-btn" class="afo-guide__dismiss" type="button">Dismiss</button>
+      </div>
+
+      <div class="afo-guide__steps">
+        <div class="afo-guide__step">
+          <div class="afo-guide__step-number">1</div>
+          <h3>Configure &amp; Deploy</h3>
+          <p>Adjust tracking settings below, then copy the generated code snippet. Paste it into <strong>Ecwid Admin → Website → Design → Custom JavaScript</strong>. That's the only setup needed.</p>
+        </div>
+
+        <div class="afo-guide__step">
+          <div class="afo-guide__step-number">2</div>
+          <h3>Open Your Storefront</h3>
+          <p>Visit your live store with your <strong>private debug token</strong> appended to the URL (shown in the Deploy section below). The debug overlay appears only for you — shoppers never see it.</p>
+        </div>
+
+        <div class="afo-guide__step">
+          <div class="afo-guide__step-number">3</div>
+          <h3>Browse &amp; See Live Data</h3>
+          <p><strong>Real metrics appear in the storefront overlay</strong> as you browse. Tab through pages, click around, test forms — the overlay shows live friction events, hotspots, and recommendations in real time.</p>
+        </div>
+      </div>
+
+      <div class="afo-guide__footer">
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#E81C24" stroke-width="1.5"/><path d="M7 5h2v1H7V5zm0 2.5h2v4H7v-4z" fill="#E81C24"/></svg>
+        <p><strong>Important:</strong> This admin page shows only demo/preview data for testing layouts. Your real accessibility metrics are always in the <strong>storefront debug overlay</strong> on your live store — that is where you review actual friction data. No backend or paid service is needed.</p>
+      </div>
+    </section>
+
+    <!-- Architecture Explainer -->
+    <div class="afo-architecture-info">
+      <svg width="22" height="22" viewBox="0 0 16 16" fill="none"><path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="#4F4F4F" stroke-width="1.3"/><path d="M7 5h2v1H7V5zm0 2.5h2v4H7v-4z" fill="#4F4F4F"/></svg>
+      <div class="afo-architecture-info__content">
+        <h3>Where Do I Find My Real Metrics?</h3>
+        <p>Because this app runs entirely in your browser with no backend, data is stored per-origin. Here's what each surface shows:</p>
+        <div class="afo-architecture-info__columns">
+          <div class="afo-architecture-info__col">
+            <strong>This Admin Dashboard</strong>
+            <span>Configuration, snippet generation, and demo scenarios only. Data here is always synthetic/preview.</span>
+          </div>
+          <div class="afo-architecture-info__col">
+            <strong>Your Storefront Debug Overlay</strong>
+            <span>Real live data from your actual store. Open your store URL + debug token to view real metrics, hotspots, and recommendations.</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <section class="afo-stack">
       <section class="afo-panel afo-controls">
@@ -594,10 +892,16 @@
     <section class="afo-panel">
       <div class="afo-actions" style="justify-content: space-between; align-items: end;">
         <div>
-          <p class="afo-section-label">Preview</p>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <p class="afo-section-label" style="margin: 0;">Dashboard Preview</p>
+            <span id="preview-demo-badge" class="afo-demo-badge">
+              <svg viewBox="0 0 16 16" fill="none"><path d="M8.94 2.22a1.06 1.06 0 00-1.88 0L1.18 13.06A1.06 1.06 0 002.12 14.6h11.76a1.06 1.06 0 00.94-1.54L8.94 2.22z" stroke="currentColor" stroke-width="1.2"/><path d="M7.25 6h1.5v3.5h-1.5V6zm0 4.5h1.5v1.5h-1.5v-1.5z" fill="currentColor"/></svg>
+              Demo Data Only
+            </span>
+          </div>
           <h2>Control Room Walkthrough</h2>
           <p id="preview-status" class="afo-preview-status">Preview Off</p>
-          <p id="preview-label" class="afo-helper">This section uses synthetic data to demonstrate how the dashboard looks with active events. To see real live data, open your storefront with the debug token URL above.</p>
+          <p id="preview-label" class="afo-helper"><strong>This section uses synthetic demo data</strong> to show you what the dashboard layout looks like with active events. To see your real live accessibility data, open your storefront with the debug token URL from the Deploy section above.</p>
           <p id="preview-outcome" class="afo-helper">Best for merchant demos, revenue reviews, and final-step checkout QA.</p>
         </div>
         <div class="afo-actions">
@@ -619,17 +923,17 @@
 
       <div class="afo-results-grid">
         <section class="afo-panel" style="padding: 1rem;">
-          <h3>Live Feed</h3>
+          <h3>Live Feed <span class="afo-demo-badge" style="font-size:0.65rem; padding:0.15rem 0.4rem;">Demo</span></h3>
           <div id="accessibility-friction-overlay-feed" class="afo-feed"></div>
         </section>
 
         <section class="afo-panel" style="padding: 1rem;">
-          <h3>Hotspots</h3>
+          <h3>Hotspots <span class="afo-demo-badge" style="font-size:0.65rem; padding:0.15rem 0.4rem;">Demo</span></h3>
           <div id="accessibility-friction-overlay-hotspots" class="afo-hotspots"></div>
         </section>
 
         <section class="afo-panel" style="padding: 1rem;">
-          <h3>Recommended Actions</h3>
+          <h3>Recommended Actions <span class="afo-demo-badge" style="font-size:0.65rem; padding:0.15rem 0.4rem;">Demo</span></h3>
           <div id="accessibility-friction-overlay-recommendations" class="afo-recommendations"></div>
         </section>
       </div>
