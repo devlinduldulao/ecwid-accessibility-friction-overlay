@@ -1,6 +1,8 @@
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { minify as terserMinify } from 'terser';
+import { transform as lightningTransform } from 'lightningcss';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(scriptDir, '..');
@@ -16,6 +18,7 @@ async function main() {
   await copyFileIfPresent('_headers');
   await copyFileIfPresent('README.md');
   await copyFileIfPresent('LICENSE');
+  await minifySrc();
   await writeBuildInfo();
   await writeRootIndex();
 
@@ -52,6 +55,30 @@ async function writeRootIndex() {
     .replaceAll('../src/', 'src/');
 
   await writeFile(targetPath, rootHtml, 'utf8');
+}
+
+async function minifySrc() {
+  const jsFiles = [
+    'src/admin/app.js',
+    'src/shared/core.js',
+    'src/storefront/custom-storefront.js',
+  ];
+
+  for (const rel of jsFiles) {
+    const filePath = path.join(distDir, rel);
+    const source = await readFile(filePath, 'utf8');
+    const result = await terserMinify(source, { sourceMap: false });
+    await writeFile(filePath, result.code, 'utf8');
+  }
+
+  const cssFile = path.join(distDir, 'src/storefront/custom-storefront.css');
+  const cssSource = await readFile(cssFile);
+  const { code: minifiedCss } = lightningTransform({
+    filename: 'custom-storefront.css',
+    code: cssSource,
+    minify: true,
+  });
+  await writeFile(cssFile, minifiedCss);
 }
 
 async function writeBuildInfo() {
